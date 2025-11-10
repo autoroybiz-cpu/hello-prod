@@ -1,17 +1,18 @@
-/* ===== AutoRoy Cloud — Premium UI v2 ===== */
+/* ===== AutoRoy Cloud — Aurora UI v3 (mobile-first, iOS-safe) ===== */
 
 /* ---------- Theme variables (Dark) ---------- */
 :root{
---bg1:#0f172a; /* slate-900 */
---bg2:#1e293b; /* slate-800 */
---acc1:#7c3aed; /* violet-600 */
---acc2:#06b6d4; /* cyan-500 */
---acc3:#22c55e; /* green-500 */
---text:#e6e8ee; /* soft white */
---muted:#9aa3b2; /* slate-400 */
+--bg1:#0b1220; /* deeper slate */
+--bg2:#0f1c37;
+--acc1:#8b5cf6; /* violet */
+--acc2:#06b6d4; /* cyan */
+--acc3:#22c55e; /* green */
+--acc4:#f472b6; /* pink */
+--text:#eef2ff; /* soft white-blue */
+--muted:#a7b0c4;
 --card:rgba(255,255,255,.08);
---border:rgba(255,255,255,.18);
---shadow: 0 25px 60px rgba(0,0,0,.35), 0 8px 18px rgba(0,0,0,.25);
+--border:rgba(255,255,255,.16);
+--shadow:0 28px 70px rgba(3,10,25,.55), 0 10px 22px rgba(3,10,25,.35);
 --radius:18px;
 }
 
@@ -23,40 +24,58 @@ body.light{
 --muted:#3b4a7a;
 --card:rgba(0,0,0,.06);
 --border:rgba(0,0,0,.12);
---shadow: 0 18px 44px rgba(0,0,0,.15), 0 8px 18px rgba(0,0,0,.08);
+--shadow:0 18px 44px rgba(0,0,0,.15), 0 8px 18px rgba(0,0,0,.08);
 }
 
 *{box-sizing:border-box}
 html,body{height:100%}
-body{
+html,body{
 margin:0;
+padding:0;
+overflow-x:hidden; /* מונע גלילה אופקית ופסים מוזרים */
+}
+
+/* ===== Base ===== */
+body{
 color:var(--text);
 font:16px/1.6 ui-sans-serif,-apple-system,Segoe UI,Roboto,Arial;
+/* iOS safe area: לא לתת לתוכן "להיכנס" מתחת ל-notch */
+padding-top: env(safe-area-inset-top);
+padding-left: env(safe-area-inset-left);
+padding-right: env(safe-area-inset-right);
+padding-bottom: env(safe-area-inset-bottom);
+
+/* רקע "אורורה" ללא background-attachment: fixed (בעייתי ב-iOS) */
 background:
-radial-gradient(1200px 600px at 10% -10%, #312e81 0%, transparent 60%),
-radial-gradient(1000px 500px at 90% 10%, #0ea5e9 0%, transparent 55%),
+radial-gradient(1200px 600px at 8% -10%, rgba(77,70,206,.55) 0%, transparent 60%),
+radial-gradient(900px 460px at 92% 0%, rgba(6,182,212,.55) 0%, transparent 58%),
+radial-gradient(1000px 520px at 50% 110%, rgba(244,114,182,.45) 0%, transparent 60%),
 linear-gradient(135deg,var(--bg1),var(--bg2));
-background-attachment:fixed;
-animation:bgShift 20s ease-in-out infinite alternate;
+background-repeat:no-repeat;
+background-size:cover;
+animation:bgHue 22s ease-in-out infinite alternate;
 }
 
-/* animated nebula */
-@keyframes bgShift{
-0%{filter:hue-rotate(0deg) saturate(105%)}
-100%{filter:hue-rotate(18deg) saturate(115%)}
+/* Animated hue/sat shift (עדין) */
+@keyframes bgHue{
+0% { filter:hue-rotate(0deg) saturate(105%) }
+100%{ filter:hue-rotate(18deg) saturate(118%) }
 }
 
-/* decorative soft orbs */
-body::before, body::after{
+/* Decorative orbs — במקום fixed (גורם “פסים” ב-iOS), נשתמש ב-absolute בתוך עטיפה */
+.orbs{ position:fixed; inset:0; pointer-events:none; z-index:-1; overflow:hidden; }
+.orbs::before, .orbs::after{
 content:"";
-position:fixed; inset:-20vh -10vw auto auto;
-width:44vw; height:44vw; pointer-events:none;
-background:radial-gradient(circle at 30% 30%,rgba(124,58,237,.25),transparent 60%);
-mix-blend-mode:screen; filter:blur(40px); opacity:.6;
+position:absolute;
+width:55vmin; height:55vmin; border-radius:50%;
+filter:blur(42px);
+mix-blend-mode:screen; opacity:.65;
 }
-body::after{
-inset:auto auto -25vh -15vw; width:50vw; height:50vw;
-background:radial-gradient(circle at 70% 70%,rgba(6,182,212,.25),transparent 60%);
+.orbs::before{ left:-12vmin; top:-8vmin;
+background:radial-gradient(circle at 30% 30%, rgba(139,92,246,.45), transparent 60%);
+}
+.orbs::after{ right:-16vmin; bottom:-12vmin;
+background:radial-gradient(circle at 70% 70%, rgba(6,182,212,.40), transparent 60%);
 }
 
 /* ---------- Layout ---------- */
@@ -77,19 +96,16 @@ color:var(--muted);
 font-size: clamp(14px, 2.2vw, 18px);
 }
 
-/* gradient only on the branded word */
+/* gradient רק על המילה הממותגת */
 .brand{
 background:linear-gradient(90deg,#fff, #a5b4fc 45%, #67e8f9 75%, #a7f3d0 100%);
--webkit-background-clip:text; background-clip:text;
-color:transparent;
+-webkit-background-clip:text; background-clip:text; color:transparent;
 }
 
 /* ---------- Cards grid ---------- */
-
 .grid{
 margin:34px auto 0;
-display:grid;
-gap:22px;
+display:grid; gap:22px;
 grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
 }
 .card{
@@ -97,6 +113,7 @@ position:relative;
 border-radius:var(--radius);
 background:linear-gradient(180deg, rgba(255,255,255,.10), rgba(255,255,255,.06));
 border:1px solid var(--border);
+/* backdrop-filter בעייתי במובייל → נרכך, ונכבה ספציפית ב-iOS בהמשך */
 backdrop-filter: blur(9px);
 -webkit-backdrop-filter: blur(9px);
 box-shadow: var(--shadow);
@@ -109,7 +126,7 @@ transform: translateY(-6px) scale(1.01);
 box-shadow: 0 35px 80px rgba(0,0,0,.45), 0 12px 26px rgba(0,0,0,.30);
 }
 .card h3{ margin:0 0 10px; font-size:18px; letter-spacing:.2px; }
-.card p, .card li{ color:#d3d7de; }
+.card p, .card li{ color:#dbe2ef; }
 .card .muted{ color:var(--muted) }
 
 /* list reset */
@@ -124,9 +141,9 @@ li{margin:6px 0}
 .pill{
 display:inline-flex; align-items:center; gap:8px;
 padding:8px 12px; border-radius:999px; margin-top:10px;
-background:rgba(124,58,237,.18);
-border:1px solid rgba(124,58,237,.35);
-color:#e9d5ff; font-weight:600;
+background:linear-gradient(90deg, rgba(139,92,246,.22), rgba(6,182,212,.22));
+border:1px solid rgba(139,92,246,.45);
+color:#f1e8ff; font-weight:600;
 }
 
 /* ---------- Buttons ---------- */
@@ -134,20 +151,21 @@ color:#e9d5ff; font-weight:600;
 .btn{
 --ring: rgba(103,232,249,.55);
 display:inline-flex; align-items:center; gap:10px;
-padding:10px 14px; border-radius:12px;
-font-weight:600; letter-spacing:.2px; text-decoration:none; color:#fff;
+padding:12px 16px; border-radius:12px;
+font-weight:700; letter-spacing:.2px; text-decoration:none; color:#fff;
 border:1px solid var(--border);
-background:linear-gradient(180deg, rgba(255,255,255,.10), rgba(255,255,255,.06));
-backdrop-filter: blur(6px);
+background:rgba(28,34,56,.66);
+box-shadow: 0 6px 18px rgba(0,0,0,.30);
+text-shadow: 0 1px 2px rgba(0,0,0,.35);
 transition: transform .2s ease, border-color .2s ease, box-shadow .2s ease, background .2s ease;
 }
 .btn:hover{
 transform: translateY(-2px);
 border-color: rgba(255,255,255,.35);
-box-shadow: 0 10px 30px var(--ring);
+box-shadow: 0 12px 32px var(--ring);
 }
 .btn.primary{
-background: linear-gradient(90deg, var(--acc1), var(--acc2));
+background: linear-gradient(90deg, var(--acc1) 0%, var(--acc2) 45%, var(--acc3) 75%, var(--acc4) 100%);
 border-color: transparent;
 }
 .btn.ghost{ background: transparent; }
@@ -161,22 +179,18 @@ footer{
 margin:34px 0 0;
 color:var(--muted);
 text-align:center;
-font-size:13px;
-opacity:.9;
+font-size:13px; opacity:.9;
 }
 
-/* ---------- Rocket: big + glow + thrust ---------- */
+/* ---------- Rocket ---------- */
 .logo-hero{
 font-size: clamp(56px, 8.4vw, 96px);
 filter: drop-shadow(0 12px 28px rgba(0,0,0,.45));
-position: relative;
-display:inline-block;
+position: relative; display:inline-block;
 transform-origin:50% 80%;
 animation: bob 3.2s ease-in-out infinite;
 }
-
-/* flame */
-.logo-hero::after{
+.logo-hero::after{ /* flame */
 content:"";
 position:absolute; left:-14px; top:62%;
 width:14px; height:14px; border-radius:50%;
@@ -184,101 +198,37 @@ background: radial-gradient(circle at 30% 30%, #ffd166 0%, #fb923c 55%, transpar
 filter: blur(1.6px) brightness(1.1);
 animation: thrust .6s ease-in-out infinite;
 }
-
-@keyframes bob{
-0%,100%{ transform: translateY(0) rotate(-2deg) }
-50% { transform: translateY(-6px) rotate(2deg) }
-}
-@keyframes thrust{
-0%,100%{ transform: translateX(-3px) scale(.85); opacity:.65 }
-50% { transform: translateX(-7px) scale(1.15); opacity:1 }
-}
+@keyframes bob{ 0%,100%{ transform: translateY(0) rotate(-2deg) } 50%{ transform: translateY(-6px) rotate(2deg) } }
+@keyframes thrust{ 0%,100%{ transform: translateX(-3px) scale(.85); opacity:.65 } 50%{ transform: translateX(-7px) scale(1.15); opacity:1 } }
 
 /* ---------- Mode toggle button (optional) ---------- */
 #modeBtn{
-position:fixed; right:16px; top:16px;
+position:fixed; right:16px; top:calc(16px + env(safe-area-inset-top));
 border:1px solid var(--border);
 background:linear-gradient(180deg, rgba(255,255,255,.10), rgba(255,255,255,.06));
 color:var(--text); padding:8px 12px; border-radius:12px;
-cursor:pointer; backdrop-filter:blur(6px);
-box-shadow: var(--shadow);
-z-index:10;
+cursor:pointer; box-shadow: var(--shadow); z-index:20;
 }
 #modeBtn:hover{ transform: translateY(-1px); }
 
 /* ---------- Small screens ---------- */
-@media (max-width:560px){
+@media (max-width:600px){
 .wrap{ padding:68px 0 46px }
 .actions{ justify-content:center }
-}
-/* === Mobile button fixes (iOS/Safari safe) === */
-
-/* צבע טקסט ורקע כהה יותר כברירת מחדל */
-.btn{
-color: #ffffff; /* טקסט לבן */
-background: rgba(255,255,255,.14); /* קצת כהה יותר כדי שלא ילבין */
-border-color: var(--border);
+.btn{ width:100%; justify-content:center; padding:14px; font-size:16px }
 }
 
-/* הכפתור הראשי נשאר דומיננטי */
-.btn.primary{
-background: linear-gradient(90deg, var(--acc1), var(--acc2));
-color:#fff;
-border-color: transparent;
+/* ===== iOS specific hardening ===== */
+@supports (-webkit-touch-callout: none) {
+/* iOS: לבטל fixed-attachment אפקטיבית (כבר לא בשימוש פה) ולרכך זכוכית */
+.card{
+backdrop-filter:none; -webkit-backdrop-filter:none;
+background:rgba(255,255,255,.08);
 }
-/* === iOS Button Visibility Fix — Final === */
-.btn {
-color: #fff;
-border: 1px solid rgba(255,255,255,0.15);
-background: rgba(40, 40, 60, 0.65); /* כהה יותר, לא נעלם יותר באייפון */
-backdrop-filter: none !important;
--webkit-backdrop-filter: none !important;
-box-shadow: 0 6px 18px rgba(0,0,0,0.3);
-text-shadow: 0 1px 2px rgba(0,0,0,0.4);
-transition: all 0.25s ease;
 }
 
-.btn:hover {
-background: rgba(90, 90, 130, 0.8);
-transform: translateY(-2px);
-box-shadow: 0 10px 30px rgba(0,0,0,0.4);
+/* ===== Accessibility: פחות תנועה למי שמעדיף ===== */
+@media (prefers-reduced-motion: reduce){
+*{ animation:none !important; transition:none !important }
 }
 
-/* כפתור ראשי (primary) */
-.btn.primary {
-background: linear-gradient(90deg, var(--acc1), var(--acc2));
-border: none;
-color: #fff;
-text-shadow: none;
-}
-
-/* במובייל – כפתורים ברוחב מלא עם ריווח ברור */
-@media (max-width: 600px) {
-.actions {
-display: flex;
-flex-direction: column;
-gap: 10px;
-}
-.btn {
-width: 100%;
-justify-content: center;
-padding: 14px;
-font-size: 16px;
-}
-}
-/* Toggle Button */
-.btn.small {
-padding: 6px 10px;
-font-size: 14px;
-border-radius: 10px;
-opacity: 0.8;
-position: absolute;
-right: 22px;
-top: 22px;
-background: rgba(255,255,255,.1);
-backdrop-filter: blur(4px);
-}
-
-body.light .btn.small {
-background: rgba(0,0,0,.1);
-}
