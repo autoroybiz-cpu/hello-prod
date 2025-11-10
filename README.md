@@ -46,3 +46,8 @@ graph TD
   D --> E[Render Deploys New Container]
   E --> F[Service Live at hello-prod.onrender.com]
   F --> G[UptimeRobot Monitors /healthz Endpoint]
+{
+  "status": "ok",
+  "version": "1.0.0",
+  "timestamp": 1699621234567
+}
