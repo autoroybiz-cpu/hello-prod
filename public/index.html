@@ -1,0 +1,57 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>AutoRoy Cloud • CI/CD Demo</title>
+  <link rel="icon" href="/favicon.svg">
+  <link rel="stylesheet" href="/styles.css" />
+</head>
+<body>
+  <header class="hero fade-in">
+    <div class="logo">🚀</div>
+    <h1>Welcome to <span>AutoRoy Cloud</span></h1>
+    <h2>Continuous Deployment Demo</h2>
+  </header>
+
+  <main class="grid fade-in">
+    <section class="card">
+      <h3>Service Status</h3>
+      <ul class="kv">
+        <li><b>Status:</b> <span id="status" class="ok">Loading…</span></li>
+        <li><b>Version:</b> <span id="version">—</span></li>
+        <li><b>Build:</b> <span id="build">—</span></li>
+        <li><b>Deployed:</b> <span id="deployed">—</span></li>
+        <li><b>Uptime:</b> <span id="uptime">—</span></li>
+      </ul>
+      <div class="pill">Live: <a href="/healthz" target="_blank">/healthz</a></div>
+    </section>
+
+    <section class="card">
+      <h3>Pipeline</h3>
+      <ol class="steps">
+        <li>GitHub Actions → Build & Push Docker image</li>
+        <li>Render Deploy Hook → Auto deploy</li>
+        <li>UptimeRobot → Monitor /healthz</li>
+      </ol>
+      <div class="badges">
+        <img alt="Live" src="https://img.shields.io/badge/Status-Live-success?style=flat-square">
+        <img alt="Build" src="https://img.shields.io/badge/Build-Automated-blue?style=flat-square">
+        <img alt="Monitoring" src="https://img.shields.io/badge/Monitoring-UptimeRobot-brightgreen?style=flat-square">
+      </div>
+    </section>
+
+    <section class="card">
+      <h3>About</h3>
+      <p>Built with <b>Node.js</b>, <b>Express</b>, <b>Docker</b>, <b>GitHub Actions</b> and <b>Render</b>.</p>
+      <p>Owner: <b>AutoRoy AI</b> • Cloud DevOps Demo</p>
+    </section>
+  </main>
+
+  <footer>
+    AutoRoy AI © <span id="year"></span> — Powered by Render & GitHub Actions
+  </footer>
+
+  <script src="/script.js"></script>
+</body>
+</html>
