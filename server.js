@@ -1,4 +1,38 @@
 import express from "express";
+import path from "path";
+import { fileURLToPath } from "url";
+
+// ESM-safe __filename & __dirname
+const __filename = fileURLToPath(import.meta.url);
+const _dirname = path.dirname(_filename);
+
+const app = express();
+const PORT = process.env.PORT || 3000;
+const VERSION = process.env.APP_VERSION || "1.0.0";
+const START = Date.now();
+
+// static files from /public
+app.use(express.static(path.join(__dirname, "public")));
+
+// serve index.html
+app.get("/", (_req, res) => {
+  res.sendFile(path.join(__dirname, "public", "index.html"));
+});
+
+// health endpoint
+app.get("/healthz", (_req, res) => {
+  res.status(200).json({
+    status: "ok",
+    version: VERSION,
+    uptime: ((Date.now() - START) / 1000).toFixed(0) + "s",
+    timestamp: Date.now()
+  });
+});
+
+// start server
+app.listen(PORT, () => console.log(🚀 Server running on port ${PORT}));
+
+import express from "express";
 
 const app = express();
 const PORT = process.env.PORT || 3000;
