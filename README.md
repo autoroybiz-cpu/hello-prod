@@ -8,49 +8,54 @@
 
 ---
 
-** 🌐 Live Demo
-🔗 [https://hello-prod.onrender.com](https://hello-prod.onrender.com)  
-🩺 Health Check: [https://hello-prod.onrender.com/healthz](https://hello-prod.onrender.com/healthz)
+## 🌐 Live Demo
+🔗 https://hello-prod.onrender.com  
+🩺 Health: https://hello-prod.onrender.com/healthz
 
 ---
 
-**  Project Overview
-This project demonstrates a *complete CI/CD pipeline* for a Node.js app, automated from GitHub to cloud deployment.
+## 🧠 Project Overview
+This project demonstrates a *complete CI/CD pipeline* for a Node.js service running in the cloud.
 
-Every change in the code triggers:
-1. *GitHub Actions* – builds & pushes a Docker image  
-2. *Render Deploy Hook* – auto-deploys the latest version to production  
-3. *UptimeRobot* – monitors uptime every 5 minutes  
+Every commit triggers:
+1. *GitHub Actions* – builds a Docker image and pushes to GHCR  
+2. *Render Deploy Hook* – auto-deploys the latest image to production  
+3. *UptimeRobot* – monitors /healthz every 5 minutes
 
 ---
 
-** ⚙ Tech Stack
+## ⚙ Tech Stack
 
 | Component | Technology |
-|------------|-------------|
-|  Language | Node.js (Express) |
-|  Containerization | Docker |
-|  CI/CD | GitHub Actions |
-|  Hosting | Render |
-|  Monitoring | UptimeRobot |
-|  Secrets Management | GitHub Secrets |
+| --- | --- |
+| 💻 Language | Node.js (Express) |
+| 📦 Containerization | Docker |
+| 🔄 CI/CD | GitHub Actions |
+| ☁ Hosting | Render |
+| 📦 Registry | GitHub Container Registry (GHCR) |
+| 🔍 Monitoring | UptimeRobot |
+| 🔐 Secrets | GitHub Actions Secrets |
 
 ---
 
-** Architecture Diagram
+## 🧩 Architecture Diagram
+
 ```mermaid
 graph TD
   A[Developer Pushes Code] --> B[GitHub Actions Builds Docker Image]
-  B --> C[Push to GHCR]
+  B --> C[Push Image to GHCR]
   C --> D[Trigger Render Deploy Hook]
   D --> E[Render Deploys New Container]
   E --> F[Service Live at hello-prod.onrender.com]
-  F --> G[UptimeRobot Monitors /healthz Endpoint]
+  F --> G[UptimeRobot Monitors /healthz]
+
 git clone https://github.com/autoroybiz-cpu/hello-prod.git
 cd hello-prod
 npm install
-npm start
-Roy Aharonovich
-DevOps Engineer | Automation Builder | AutoRoy AI 🚀
-📧 Contact: autoroybiz@gmail.com
-🌐 AutoRoy AI – Business Automations￼
+npm start
+# open http://localhost:3000
+
+Author
+
+Roy Aharonovich – DevOps & Automations | AutoRoy AI 🚀
+📧 autoroybiz@gmail.com
