@@ -62,41 +62,20 @@ Roy Aharonovich – DevOps & Automations | AutoRoy AI 🚀
 md
 # 🚀 Hello Prod – פרויקט DevOps של AutoRoy AI
 
-## 🌐 דמו חי
-🔗 https://hello-prod.onrender.com  
-🩺 בדיקת בריאות: https://hello-prod.onrender.com/healthz
+🌐 דמו חי
 
----
+🔗 https://hello-prod.onrender.com
+🩺 בדיקת בריאות: https://hello-prod.onrender.com/healthz 
 
-## 🧠 תיאור כללי
-פרויקט הדגמה ל-**CI/CD מלא** עבור שירות Node.js בענן:
-1. **GitHub Actions** בונה Image ודוחף ל-GHCR  
-2. **Render Deploy Hook** מבצע Deploy אוטומטי לפרודקשן  
-3. **UptimeRobot** מנטר את `/healthz` כל 5 דקות
-
----
-
-## ⚙ טכנולוגיות
-
-| רכיב | טכנולוגיה |
-| --- | --- |
-| 💻 שפה | Node.js (Express) |
-| 📦 קונטיינרים | Docker |
-| 🔄 CI/CD | GitHub Actions |
-| ☁ ענן | Render |
-| 📦 רג'יסטרי | GitHub Container Registry (GHCR) |
-| 🔍 ניטור | UptimeRobot |
-| 🔐 סודות | GitHub Secrets |
-
----
-
-## 🧩 תרשים ארכיטקטורה
-
-mermaid
+זהו פרויקט המדגים תהליך CI/CD מלא עבור שרת Node.js בענן.
+בכל עדכון קוד מתבצעות הפעולות הבאות:
+	1.	GitHub Actions בונה Docker Image חדש
+	2.	Render מבצע Deploy אוטומטי
+	3.	UptimeRobot מנטר את /healthz לוודא זמינות
 graph TD
-  A[Commit בקוד] --> B[GitHub Actions בונה Docker Image]
-  B --> C[דחיפה ל-GHCR]
-  C --> D[הפעלת Render Deploy Hook]
+  A[מפתח מבצע Commit] --> B[GitHub Actions בונה Docker Image]
+  B --> C[מעלה ל-GHCR]
+  C --> D[מפעיל Deploy Hook של Render]
   D --> E[Render מעלה קונטיינר חדש]
-  E --> F[השירות חי ב-hello-prod.onrender.com]
+  E --> F[השירות פועל ב-hello-prod.onrender.com]
   F --> G[UptimeRobot מנטר את /healthz]
