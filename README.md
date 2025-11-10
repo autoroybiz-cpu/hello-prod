@@ -46,8 +46,11 @@ graph TD
   D --> E[Render Deploys New Container]
   E --> F[Service Live at hello-prod.onrender.com]
   F --> G[UptimeRobot Monitors /healthz Endpoint]
-{
-  "status": "ok",
-  "version": "1.0.0",
-  "timestamp": 1699621234567
-}
+git clone https://github.com/autoroybiz-cpu/hello-prod.git
+cd hello-prod
+npm install
+npm start
+Roy Aharonovich
+DevOps Engineer | Automation Builder | AutoRoy AI 🚀
+📧 Contact: autoroybiz@gmail.com
+🌐 AutoRoy AI – Business Automations￼
