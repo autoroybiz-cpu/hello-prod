@@ -83,14 +83,14 @@ app.get("/", (_req, res) => {
 </body></html>`);
 });
 
-app.get("/healthz", (_req, res) => {
-  res.json({
-    status: "ok",
-    version: VERSION,
-    uptime: Math.round((Date.now() - START)/1000) + "s",
-    timestamp: Date.now()
-  });
+import path from "path";
+import { fileURLToPath } from "url";
+
+const __filename = fileURLToPath(import.meta.url);
+const _dirname = path.dirname(_filename);
+
+app.use(express.static("public"));
+
+app.get("/", (_req, res) => {
+  res.sendFile(path.join(__dirname, "public", "index.html"));
 });
-
-app.listen(PORT, () => console.log("🚀 Server running on port " + PORT));
-
