@@ -34,11 +34,23 @@
         <li>Render Deploy Hook → Auto deploy</li>
         <li>UptimeRobot → Monitor /healthz</li>
       </ol>
-      <div class="badges">
-        <img alt="Live" src="https://img.shields.io/badge/Status-Live-success?style=flat-square">
-        <img alt="Build" src="https://img.shields.io/badge/Build-Automated-blue?style=flat-square">
-        <img alt="Monitoring" src="https://img.shields.io/badge/Monitoring-UptimeRobot-brightgreen?style=flat-square">
-      </div>
+     <div class="badges">
+  <span class="badge badge-green" title="Service is responding">Status: Live</span>
+  <a class="badge badge-blue" href="https://github.com/${REPO}/commit/${BUILD}" target="_blank" rel="noopener" title="View build commit on GitHub">
+    Build: ${BUILD}
+  </a>
+  <span class="badge badge-purple" title="UptimeRobot external monitoring">Monitoring: UptimeRobot</span>
+</div>
+
+<div class="meta">
+  <div><strong>Version:</strong> ${VERSION}</div>
+  <div><strong>Last deployed:</strong> ${DEPLOYED_AT}</div>
+</div>
+
+<div class="actions">
+  <a class="btn" href="/healthz" target="_blank" rel="noopener">Open /healthz</a>
+  <a class="btn btn-ghost" href="https://github.com/${REPO}" target="_blank" rel="noopener">View Source</a>
+</div>
     </section>
 
     <section class="card">
