@@ -1,72 +1,92 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width,initial-scale=1" />
-  <title>AutoRoy Cloud • CI/CD Demo</title>
-  <link rel="icon" href="/favicon.svg">
-  <link rel="stylesheet" href="/styles.css" />
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1" />
+<title>AutoRoy Cloud • CI/CD Demo</title>
+<link rel="icon" href="/favicon.svg" />
+<link rel="stylesheet" href="/styles.css" />
 </head>
 <body>
+
+<!-- ===== Header ===== -->
 <header class="hero fade-in">
-<h1>
 <span class="logo-bob logo-hero" aria-hidden="true">🚀</span>
-Welcome to <span class="brand">AutoRoy Cloud</span>
-<h2>Continuous Deployment Demo</h2>
+<h1>Welcome to <span class="brand">AutoRoy Cloud</span></h1>
+<h2 class="subtitle">Continuous Deployment Demo</h2>
+
+<!-- כפתור מצב יום/לילה -->
+<button id="themeToggle" class="btn ghost small">☀️</button>
 </header>
-  <main class="grid fade-in">
-    <section class="card">
-      <h3>Service Status</h3>
-      <ul class="kv">
-        <li><b>Status:</b> <span id="status" class="ok">Loading…</span></li>
-        <li><b>Version:</b> <span id="version">—</span></li>
-        <li><b>Build:</b> <span id="build">—</span></li>
-        <li><b>Deployed:</b> <span id="deployed">—</span></li>
-        <li><b>Uptime:</b> <span id="uptime">—</span></li>
-      </ul>
-      <div class="pill">Live: <a href="/healthz" target="_blank">/healthz</a></div>
-    </section>
 
-    <section class="card">
-      <h3>Pipeline</h3>
-      <ol class="steps">
-        <li>GitHub Actions → Build & Push Docker image</li>
-        <li>Render Deploy Hook → Auto deploy</li>
-        <li>UptimeRobot → Monitor /healthz</li>
-      </ol>
-     <div class="badges">
-  <span class="badge badge-green" title="Service is responding">Status: Live</span>
-  <a class="badge badge-blue" href="https://github.com/${REPO}/commit/${BUILD}" target="_blank" rel="noopener" title="View build commit on GitHub">
-    Build: ${BUILD}
-  </a>
-  <span class="badge badge-purple" title="UptimeRobot external monitoring">Monitoring: UptimeRobot</span>
-</div>
-<div class="cta">
-  <a class="btn" href="/healthz" target="_blank">Open /healthz</a>
-  <a class="btn" href="https://github.com/autoroybiz-cpu/hello-prod" target="_blank">View Source</a>
-</div>
-<div class="meta">
-  <div><strong>Version:</strong> ${VERSION}</div>
-  <div><strong>Last deployed:</strong> ${DEPLOYED_AT}</div>
-</div>
+<!-- ===== Main Content ===== -->
+<main class="grid fade-in">
 
+<!-- Service Status -->
+<section class="card">
+<h3>Service Status</h3>
+<ul class="kv">
+<li><b>Status:</b> <span id="status" class="ok">Loading...</span></li>
+<li><b>Version:</b> <span id="version"></span></li>
+<li><b>Build:</b> <span id="build"></span></li>
+<li><b>Deployed:</b> <span id="deployed"></span></li>
+<li><b>Uptime:</b> <span id="uptime"></span></li>
+</ul>
+<div class="pill">Live: <a href="/healthz" target="_blank">/healthz</a></div>
+</section>
+
+<!-- Pipeline -->
+<section class="card">
+<h3>Pipeline</h3>
+<ol class="steps">
+<li>GitHub Actions → Build & Push Docker image</li>
+<li>Render Deploy Hook → Auto deploy</li>
+<li>UptimeRobot → Monitor /healthz</li>
+</ol>
+<p>Status: <b>Live</b> • Build: <span id="build-info">${BUILD}</span></p>
+<p>Monitoring: UptimeRobot</p>
 <div class="actions">
-  <a class="btn" href="/healthz" target="_blank" rel="noopener">Open /healthz</a>
-  <a class="btn btn-ghost" href="https://github.com/${REPO}" target="_blank" rel="noopener">View Source</a>
+<a href="/healthz" class="btn primary" target="_blank">Open /healthz</a>
+<a href="https://github.com/" class="btn ghost" target="_blank">View Source</a>
 </div>
-    </section>
+<p><b>Version:</b> ${VERSION}<br><b>Last deployed:</b> ${DEPLOYED_AT}</p>
+</section>
 
-    <section class="card">
-      <h3>About</h3>
-      <p>Built with <b>Node.js</b>, <b>Express</b>, <b>Docker</b>, <b>GitHub Actions</b> and <b>Render</b>.</p>
-      <p>Owner: <b>AutoRoy AI</b> • Cloud DevOps Demo</p>
-    </section>
-  </main>
+<!-- About -->
+<section class="card">
+<h3>About</h3>
+<p>Built with <b>Node.js</b>, <b>Express</b>, <b>Docker</b>, <b>GitHub Actions</b> and <b>Render</b>.</p>
+<p>Owner: <b>AutoRoy AI</b> • Cloud DevOps Demo</p>
+</section>
 
-  <footer>
-    AutoRoy AI © <span id="year"></span> — Powered by Render & GitHub Actions
-  </footer>
+</main>
 
-  <script src="/script.js"></script>
+<!-- ===== Footer ===== -->
+<footer>
+AutoRoy AI © 2025 — Powered by Render & GitHub Actions
+</footer>
+
+<!-- ===== Theme Toggle Script ===== -->
+<script>
+const body = document.body;
+const toggle = document.getElementById("themeToggle");
+
+// טוען מצב שמור (אם קיים)
+if (localStorage.getItem("theme") === "light") {
+body.classList.add("light");
+}
+
+// מאזין ללחיצה על הכפתור
+toggle.addEventListener("click", () => {
+body.classList.toggle("light");
+const mode = body.classList.contains("light") ? "light" : "dark";
+localStorage.setItem("theme", mode);
+toggle.textContent = mode === "light" ? "🌙" : "☀️";
+});
+
+// קובע את האייקון ההתחלתי
+toggle.textContent = body.classList.contains("light") ? "🌙" : "☀️";
+</script>
+
 </body>
 </html>
