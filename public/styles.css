@@ -37,3 +37,21 @@ footer{margin:12px 0 26px; color:#e6e6e6; font-size:13px}
 @keyframes fade{to{opacity:1}}
 @keyframes float{50%{transform:translateY(-6px)}}
 @keyframes rise{from{transform:translateY(8px);opacity:.0} to{transform:none;opacity:1}}
+/* --- Buttons and CTA section --- */
+.cta {
+  margin-top: 12px;
+  text-align: center;
+}
+.btn {
+  display: inline-block;
+  padding: 10px 16px;
+  border-radius: 8px;
+  border: 1px solid rgba(255, 255, 255, 0.25);
+  text-decoration: none;
+  margin: 8px;
+  color: inherit;
+  transition: transform 0.15s ease;
+}
+.btn:hover {
+  transform: translateY(-1px);
+}
