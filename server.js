@@ -5,19 +5,14 @@ import { fileURLToPath } from "url";
 const app = express();
 const PORT = process.env.PORT || 3000;
 
-// מוטמע בבילד/ב־ENV (נוסיף מיד)
+const __filename = fileURLToPath(import.meta.url);
+const _dirname = path.dirname(_filename);
+
 const VERSION = process.env.APP_VERSION || "1.0.0";
-const BUILD   = process.env.APP_BUILD   || "dev";
+const BUILD = process.env.APP_BUILD || "dev";
 const DEPLOYED_AT = process.env.APP_DEPLOYED_AT || "";
 const START_MS = Date.now();
 
-// static files
-const __filename = fileURLToPath(import.meta.url);
-import { fileURLToPath } from "url";
-import path from "path";
-
-const __filename = fileURLToPath(import.meta.url);
-const _dirname = path.dirname(_filename);
 app.use(express.static(path.join(__dirname, "public")));
 
 app.get("/", (_req, res) => {
