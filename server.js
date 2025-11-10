@@ -4,11 +4,15 @@ const PORT = process.env.PORT || 3000;
 const VERSION = process.env.APP_VERSION || "1.0.0";
 
 app.get("/", (_req, res) => {
-  res.send(Hello Prod 🚀 (version ${VERSION}));
+  res.send("Hello Prod 🚀 (version " + VERSION + ")");
 });
 
 app.get("/healthz", (_req, res) => {
-  res.status(200).json({ status: "ok", version: VERSION, timestamp: Date.now() });
+  res.status(200).json({
+    status: "ok",
+    version: VERSION,
+    timestamp: Date.now()
+  });
 });
 
 app.listen(PORT, () => {
