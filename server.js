@@ -8,15 +8,58 @@ const START_TIME = Date.now();
 app.get("/", (req, res) => {
   const uptime = ((Date.now() - START_TIME) / 1000 / 60).toFixed(2);
   res.send(`
-    <html style="font-family: Arial; background: linear-gradient(135deg,#2b1055,#7597de); color: white; text-align:center; padding-top:100px;">
+    <!DOCTYPE html>
+    <html lang="en">
+    <head>
+      <meta charset="UTF-8" />
+      <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+      <title>AutoRoy Cloud</title>
+      <style>
+        body {
+          font-family: Arial, sans-serif;
+          background: linear-gradient(135deg, #1a1f71, #6a11cb, #2575fc);
+          color: white;
+          text-align: center;
+          margin: 0;
+          padding: 80px 20px;
+        }
+        h1 {
+          font-size: 2.8em;
+          margin-bottom: 10px;
+        }
+        h2 {
+          color: #a0c4ff;
+          margin-bottom: 30px;
+        }
+        .info {
+          background: rgba(255, 255, 255, 0.1);
+          border-radius: 10px;
+          display: inline-block;
+          padding: 20px 40px;
+        }
+        hr {
+          border: 0;
+          border-top: 1px solid rgba(255, 255, 255, 0.3);
+          margin: 20px 0;
+        }
+        footer {
+          margin-top: 40px;
+          font-size: 13px;
+          color: #ccc;
+        }
+      </style>
+    </head>
+    <body>
       <h1>🚀 Welcome to AutoRoy Cloud</h1>
-      <h2>Environment: Production ✅</h2>
-      <p>Version: <b>${VERSION}</b></p>
-      <p>Uptime: ${uptime} minutes</p>
-      <p>Status: <span style="color:lime;">Running Smoothly</span></p>
-      <hr style="width:50%; border:1px solid white;">
-      <p>Powered by <b>Render + GitHub Actions + Docker</b></p>
-      <p style="font-size:13px; color:#ccc;">AutoRoy AI © ${new Date().getFullYear()}</p>
+      <h2>Continuous Deployment Demo</h2>
+      <div class="info">
+        <p><strong>Version:</strong> ${VERSION}</p>
+        <p><strong>Uptime:</strong> ${uptime} minutes</p>
+        <p><strong>Status:</strong> ✅ Running Smoothly</p>
+      </div>
+      <hr />
+      <footer>AutoRoy AI © ${new Date().getFullYear()} — Powered by Render & GitHub Actions</footer>
+    </body>
     </html>
   `);
 });
