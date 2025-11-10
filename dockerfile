@@ -28,7 +28,7 @@ ENV APP_VERSION=${APP_VERSION} \
 
 COPY --from=deps /app/node_modules ./node_modules
 COPY . .
-
+ENV PORT=3000
 EXPOSE 3000
 HEALTHCHECK --interval=30s --timeout=3s --retries=3 CMD wget -qO- http://localhost:3000/healthz || exit 1
 CMD ["node","server.js"]
