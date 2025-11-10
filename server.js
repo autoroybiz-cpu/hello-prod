@@ -3,6 +3,9 @@ import express from "express";
 const app = express();
 const PORT = process.env.PORT || 3000;
 const VERSION = process.env.APP_VERSION || "1.0.0";
+const BUILD = process.env.APP_BUILD || "dev";
+const DEPLOYED_AT = process.env.APP_DEPLOYED_AT || new Date().toISOString();
+const REPO = "autoroybiz-cpu/hello-prod";
 const START = Date.now();
 
 app.get("/", (_req, res) => {
