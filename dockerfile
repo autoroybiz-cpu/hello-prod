@@ -11,8 +11,7 @@ ENV APP_VERSION=${APP_VERSION} \
 # --- end metadata ---
 
 COPY package*.json ./
-RUN npm ci --omit=dev
-
+RUN npm install --omit=dev
 # ==============================
 FROM node:20-alpine
 WORKDIR /app
