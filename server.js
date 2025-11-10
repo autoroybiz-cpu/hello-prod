@@ -13,7 +13,11 @@ const START_MS = Date.now();
 
 // static files
 const __filename = fileURLToPath(import.meta.url);
-const _dirname  = path.dirname(_filename);
+import { fileURLToPath } from "url";
+import path from "path";
+
+const __filename = fileURLToPath(import.meta.url);
+const _dirname = path.dirname(_filename);
 app.use(express.static(path.join(__dirname, "public")));
 
 app.get("/", (_req, res) => {
