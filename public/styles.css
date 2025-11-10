@@ -1,5 +1,6 @@
-/* ===== AutoRoy Cloud — Premium UI v1 (CSS-only) ===== */
+/* ===== AutoRoy Cloud — Premium UI v2 ===== */
 
+/* ---------- Theme variables (Dark) ---------- */
 :root{
 --bg1:#0f172a; /* slate-900 */
 --bg2:#1e293b; /* slate-800 */
@@ -14,6 +15,17 @@
 --radius:18px;
 }
 
+/* ---------- Theme variables (Light) ---------- */
+body.light{
+--bg1:#f7f9ff;
+--bg2:#e9eefb;
+--text:#0b0f19;
+--muted:#3b4a7a;
+--card:rgba(0,0,0,.06);
+--border:rgba(0,0,0,.12);
+--shadow: 0 18px 44px rgba(0,0,0,.15), 0 8px 18px rgba(0,0,0,.08);
+}
+
 *{box-sizing:border-box}
 html,body{height:100%}
 body{
@@ -24,11 +36,11 @@ background:
 radial-gradient(1200px 600px at 10% -10%, #312e81 0%, transparent 60%),
 radial-gradient(1000px 500px at 90% 10%, #0ea5e9 0%, transparent 55%),
 linear-gradient(135deg,var(--bg1),var(--bg2));
-background-attachment: fixed;
+background-attachment:fixed;
 animation:bgShift 20s ease-in-out infinite alternate;
 }
 
-/* subtle animated glow “nebula” */
+/* animated nebula */
 @keyframes bgShift{
 0%{filter:hue-rotate(0deg) saturate(105%)}
 100%{filter:hue-rotate(18deg) saturate(115%)}
@@ -47,16 +59,16 @@ inset:auto auto -25vh -15vw; width:50vw; height:50vw;
 background:radial-gradient(circle at 70% 70%,rgba(6,182,212,.25),transparent 60%);
 }
 
-/* layout */
+/* ---------- Layout ---------- */
 .wrap{ width:min(1180px,92vw); margin:0 auto; padding:84px 0 56px; }
 .hero{ text-align:center; margin: 18px 0 28px; }
+
 h1{
 margin:0 0 10px;
 font-size: clamp(36px, 5.6vw, 60px);
 letter-spacing:.3px;
 line-height:1.1;
-background:linear-gradient(90deg,#fff, #a5b4fc 45%, #67e8f9 75%, #a7f3d0 100%);
--webkit-background-clip:text; background-clip:text; color:transparent;
+color:var(--text);
 text-shadow: 0 10px 40px rgba(0,0,0,.35);
 }
 .subtitle{
@@ -65,7 +77,15 @@ color:var(--muted);
 font-size: clamp(14px, 2.2vw, 18px);
 }
 
-/* grid cards */
+/* gradient only on the branded word */
+.brand{
+background:linear-gradient(90deg,#fff, #a5b4fc 45%, #67e8f9 75%, #a7f3d0 100%);
+-webkit-background-clip:text; background-clip:text;
+color:transparent;
+}
+
+/* ---------- Cards grid ---------- */
+
 .grid{
 margin:34px auto 0;
 display:grid;
@@ -88,10 +108,8 @@ transition: transform .35s cubic-bezier(.2,.6,.2,1), box-shadow .35s ease;
 transform: translateY(-6px) scale(1.01);
 box-shadow: 0 35px 80px rgba(0,0,0,.45), 0 12px 26px rgba(0,0,0,.30);
 }
-.card h3{
-margin:0 0 10px; font-size:18px; letter-spacing:.2px;
-}
-.card p, .card li{ color: #d3d7de; }
+.card h3{ margin:0 0 10px; font-size:18px; letter-spacing:.2px; }
+.card p, .card li{ color:#d3d7de; }
 .card .muted{ color:var(--muted) }
 
 /* list reset */
@@ -101,6 +119,8 @@ li{margin:6px 0}
 /* metric rows */
 .kv{ display:flex; align-items:center; gap:8px; margin:6px 0 }
 .kv b{ color:#eaf2ff }
+
+/* status pill */
 .pill{
 display:inline-flex; align-items:center; gap:8px;
 padding:8px 12px; border-radius:999px; margin-top:10px;
@@ -109,7 +129,7 @@ border:1px solid rgba(124,58,237,.35);
 color:#e9d5ff; font-weight:600;
 }
 
-/* buttons */
+/* ---------- Buttons ---------- */
 .actions{ margin-top:14px; display:flex; flex-wrap:wrap; gap:10px }
 .btn{
 --ring: rgba(103,232,249,.55);
@@ -130,15 +150,13 @@ box-shadow: 0 10px 30px var(--ring);
 background: linear-gradient(90deg, var(--acc1), var(--acc2));
 border-color: transparent;
 }
-.btn.ghost{
-background: transparent;
-}
+.btn.ghost{ background: transparent; }
 
 /* tiny badge row */
 .badges{ margin-top:8px; display:flex; flex-wrap:wrap; gap:8px }
 .badges img{ height:20px; opacity:.95; filter:drop-shadow(0 2px 8px rgba(0,0,0,.35))}
 
-/* footer */
+/* ---------- Footer ---------- */
 footer{
 margin:34px 0 0;
 color:var(--muted);
@@ -147,39 +165,49 @@ font-size:13px;
 opacity:.9;
 }
 
-/* rocket bob */
-.logo-bob{ display:inline-block; transform-origin:50% 80%; animation: bob 3.2s ease-in-out infinite; }
-@keyframes bob{
-0%,100%{ transform: translateY(0) rotate(-2deg) }
-50%{ transform: translateY(-6px) rotate(2deg) }
+/* ---------- Rocket: big + glow + thrust ---------- */
+.logo-hero{
+font-size: clamp(56px, 8.4vw, 96px);
+filter: drop-shadow(0 12px 28px rgba(0,0,0,.45));
+position: relative;
+display:inline-block;
+transform-origin:50% 80%;
+animation: bob 3.2s ease-in-out infinite;
 }
 
-/* small screens polish */
+/* flame */
+.logo-hero::after{
+content:"";
+position:absolute; left:-14px; top:62%;
+width:14px; height:14px; border-radius:50%;
+background: radial-gradient(circle at 30% 30%, #ffd166 0%, #fb923c 55%, transparent 70%);
+filter: blur(1.6px) brightness(1.1);
+animation: thrust .6s ease-in-out infinite;
+}
+
+@keyframes bob{
+0%,100%{ transform: translateY(0) rotate(-2deg) }
+50% { transform: translateY(-6px) rotate(2deg) }
+}
+@keyframes thrust{
+0%,100%{ transform: translateX(-3px) scale(.85); opacity:.65 }
+50% { transform: translateX(-7px) scale(1.15); opacity:1 }
+}
+
+/* ---------- Mode toggle button (optional) ---------- */
+#modeBtn{
+position:fixed; right:16px; top:16px;
+border:1px solid var(--border);
+background:linear-gradient(180deg, rgba(255,255,255,.10), rgba(255,255,255,.06));
+color:var(--text); padding:8px 12px; border-radius:12px;
+cursor:pointer; backdrop-filter:blur(6px);
+box-shadow: var(--shadow);
+z-index:10;
+}
+#modeBtn:hover{ transform: translateY(-1px); }
+
+/* ---------- Small screens ---------- */
 @media (max-width:560px){
 .wrap{ padding:68px 0 46px }
 .actions{ justify-content:center }
 }
-/* Hero rocket — bigger, glow, thrust */
-.logo-hero{
-font-size: clamp(46px, 7.2vw, 88px);
-filter: drop-shadow(0 12px 28px rgba(0,0,0,.45));
-position: relative;
-}
-
-/* “להבה” קטנה אחורה */
-.logo-hero::after{
-content:"";
-position:absolute; left: -12px; top: 60%;
-width: 12px; height: 12px; border-radius: 50%;
-background: radial-gradient(circle at 30% 30%, #ffd166 0%, #fb923c 55%, transparent 70%);
-filter: blur(1.5px) brightness(1.2);
-animation: thrust 0.6s ease-in-out infinite;
-}
-
-@keyframes thrust{
-0%,100%{ transform: translateX(-3px) scale(.8); opacity:.65 }
-50% { transform: translateX(-7px) scale(1.15); opacity:1 }
-}
-
-/* כבר קיימת אצלך bob — מוסיף עוד קצת עומק */
-.logo-bob{ animation: bob 3.2s ease-in-out infinite; }
