@@ -211,3 +211,18 @@ z-index:10;
 .wrap{ padding:68px 0 46px }
 .actions{ justify-content:center }
 }
+/* === Mobile button fixes (iOS/Safari safe) === */
+
+/* צבע טקסט ורקע כהה יותר כברירת מחדל */
+.btn{
+color: #ffffff; /* טקסט לבן */
+background: rgba(255,255,255,.14); /* קצת כהה יותר כדי שלא ילבין */
+border-color: var(--border);
+}
+
+/* הכפתור הראשי נשאר דומיננטי */
+.btn.primary{
+background: linear-gradient(90deg, var(--acc1), var(--acc2));
+color:#fff;
+border-color: transparent;
+}
