@@ -30,7 +30,7 @@ app.get("/healthz", (_req, res) => {
 });
 
 // start server
-app.listen(PORT, () => console.log(🚀 Server running on port ${PORT}));
+app.listen(PORT, () => console.log('🚀 Server running on port ${PORT}));
 
 import express from "express";
 
