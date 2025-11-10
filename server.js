@@ -24,6 +24,12 @@ app.get("/", (_req, res) => {
   h1{font-size:44px;margin:0 0 8px;text-shadow:0 6px 16px rgba(0,0,0,.25)}
   h1 .brand{background:linear-gradient(90deg,#fff,#a0c4ff);-webkit-background-clip:text;color:transparent}
   h2{margin:0;color:var(--muted);font-weight:500}
+  <div class="info">
+  <p><b>Version:</b> ${process.env.APP_VERSION || "1.0.0"}</p>
+  <p><b>Build:</b> ${process.env.APP_BUILD || "local"}</p>
+  <p><b>Deployed at:</b> ${process.env.APP_DEPLOYED_AT || "N/A"}</p>
+</div>
+<hr style="width:60%;border:1px solid rgba(255,255,255,0.2);margin:20px auto;">
   .card{margin:28px auto 14px;display:inline-block;padding:24px 34px;border-radius:14px;
         background:var(--card);backdrop-filter:blur(3px);box-shadow:0 10px 30px rgba(0,0,0,.18)}
   .kv{margin:6px 0}
