@@ -47,8 +47,7 @@ graph TD
   C --> D[Trigger Render Deploy Hook]
   D --> E[Render Deploys New Container]
   E --> F[Service Live at hello-prod.onrender.com]
-  F --> G[UptimeRobot Monitors /healthz]
-
+  F --> G[UptimeRobot Monitors /healthz]'''
 git clone https://github.com/autoroybiz-cpu/hello-prod.git
 cd hello-prod
 npm install
@@ -59,3 +58,45 @@ Author
 
 Roy Aharonovich – DevOps & Automations | AutoRoy AI 🚀
 📧 autoroybiz@gmail.com
+
+md
+# 🚀 Hello Prod – פרויקט DevOps של AutoRoy AI
+
+## 🌐 דמו חי
+🔗 https://hello-prod.onrender.com  
+🩺 בדיקת בריאות: https://hello-prod.onrender.com/healthz
+
+---
+
+## 🧠 תיאור כללי
+פרויקט הדגמה ל-**CI/CD מלא** עבור שירות Node.js בענן:
+1. **GitHub Actions** בונה Image ודוחף ל-GHCR  
+2. **Render Deploy Hook** מבצע Deploy אוטומטי לפרודקשן  
+3. **UptimeRobot** מנטר את `/healthz` כל 5 דקות
+
+---
+
+## ⚙ טכנולוגיות
+
+| רכיב | טכנולוגיה |
+| --- | --- |
+| 💻 שפה | Node.js (Express) |
+| 📦 קונטיינרים | Docker |
+| 🔄 CI/CD | GitHub Actions |
+| ☁ ענן | Render |
+| 📦 רג'יסטרי | GitHub Container Registry (GHCR) |
+| 🔍 ניטור | UptimeRobot |
+| 🔐 סודות | GitHub Secrets |
+
+---
+
+## 🧩 תרשים ארכיטקטורה
+
+mermaid
+graph TD
+  A[Commit בקוד] --> B[GitHub Actions בונה Docker Image]
+  B --> C[דחיפה ל-GHCR]
+  C --> D[הפעלת Render Deploy Hook]
+  D --> E[Render מעלה קונטיינר חדש]
+  E --> F[השירות חי ב-hello-prod.onrender.com]
+  F --> G[UptimeRobot מנטר את /healthz]
