@@ -21,18 +21,24 @@
 <body>
 <div class="orbs" aria-hidden="true"></div>
 
-<header class="topbar reveal" role="banner">
+<header class="topbar" role="banner">
 <div class="container">
-<div class="brand" aria-label="AutoRoy brand">
+<a class="brand" href="#top" aria-label="AutoRoy home">
 <div class="logo" aria-hidden="true">AR</div>
 <span class="brand-name">AutoRoy</span>
-</div>
+</a>
 
 <nav class="nav" role="navigation" aria-label="Primary">
 <a href="#features">Features</a>
 <a href="#flow">How it works</a>
-<a class="pill" target="_blank" rel="noopener" href="https://github.com/autoroybiz-cpu/devops-training">View source ↗</a>
-<button id="themeToggle" class="btn small" type="button" aria-label="Toggle theme">🌙</button>
+<a class="btn pill" target="_blank" rel="noopener"
+href="https://github.com/autoroybiz-cpu/devops-training">View source ↗</a>
+
+<!-- כפתור מצב בהיר/כהה – גדול, ברור, נגיש -->
+<button id="themeToggle" class="btn theme" type="button" aria-label="Toggle theme">
+<span class="icon" aria-hidden="true">☀</span>
+<span class="label">Theme</span>
+</button>
 </nav>
 </div>
 </header>
