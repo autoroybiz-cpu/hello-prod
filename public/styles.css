@@ -298,3 +298,61 @@ color: #0b0f19;
 
 /* קובע מרווח תחת הטופבר הסטיקי כדי שלא יכסה את ההירו */
 .wrap{ padding-top: 96px; }
+/* ===== Topbar — glassy, sticky, professional (override) ===== */
+.topbar{
+position: sticky; top:0; z-index:60;
+background: linear-gradient(180deg, rgba(10,16,30,.78), rgba(10,16,30,.35));
+backdrop-filter: blur(10px);
+-webkit-backdrop-filter: blur(10px);
+border-bottom: 1px solid var(--border);
+box-shadow: 0 10px 30px rgba(0,0,0,.25);
+}
+.topbar .container{
+display:flex; align-items:center; justify-content:space-between;
+gap:18px; padding:14px 0;
+}
+
+/* מותג */
+.brand{ display:flex; align-items:center; gap:10px; text-decoration:none; }
+.brand .logo{
+width:34px; height:34px; border-radius:10px;
+display:grid; place-items:center; font-weight:900;
+background: linear-gradient(135deg, var(--acc1), var(--acc2));
+color:#fff;
+box-shadow: 0 6px 16px rgba(0,0,0,.35);
+}
+.brand .brand-name{ font-weight:800; letter-spacing:.2px; }
+
+/* ניווט */
+.nav{ display:flex; align-items:center; gap:14px; flex-wrap:wrap; }
+.nav a{
+color: var(--muted); text-decoration:none; font-weight:600;
+padding:8px 10px; border-radius:10px;
+}
+.nav a:hover{ color: var(--text); background: rgba(255,255,255,.06); }
+
+/* כפתור אור/חושך – גדול ופרימיום */
+.topbar .btn.small{
+display:inline-flex; align-items:center; justify-content:center;
+height:44px; min-width:44px; padding:0 14px;
+border-radius:12px; border:1px solid var(--border);
+background: linear-gradient(180deg, rgba(255,255,255,.10), rgba(255,255,255,.05));
+color:#fff; font-weight:800; letter-spacing:.2px;
+box-shadow: 0 8px 22px rgba(0,0,0,.28);
+transition: transform .15s ease, box-shadow .15s ease, border-color .2s ease;
+}
+.topbar .btn.small:hover{
+transform: translateY(-2px);
+border-color: rgba(255,255,255,.28);
+box-shadow: 0 14px 30px rgba(0,0,0,.35);
+}
+
+/* התאמות מובייל */
+@media (max-width:600px){
+.topbar .container{ padding:10px 0; }
+.nav{ gap:10px; }
+.topbar .btn.small{ height:42px; padding:0 12px; }
+}
+
+/* מרווח תוכן בגלל הטופבר הסטיקי */
+.wrap{ padding-top:96px; }
