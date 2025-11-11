@@ -14,7 +14,8 @@
 <link rel="preconnect" href="https://fonts.googleapis.com" />
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;800&display=swap" rel="stylesheet" />
-<link rel="stylesheet" href="styles.css?v=restore" />
+<!-- cache-bust -->
+<link rel="stylesheet" href="styles.css?v=aurora3" />
 </head>
 
 <body>
@@ -152,35 +153,29 @@ Built by <b>AutoRoy</b> · DevOps &amp; Automations •
 </footer>
 
 <script>
-/* ---------- פתיחה תמיד לראש הדף (גם עם bfcache) ---------- */
+/* ---------- פתיחה תמיד לראש הדף ---------- */
 if ('scrollRestoration' in history) history.scrollRestoration = 'manual';
-
 function scrollTopIfNeeded(){
 if (!location.hash) {
-window.scrollTo({ top: 0, left: 0, behavior: 'instant' in window ? 'instant' : 'auto' });
-// “ביטוח” קטן נגד שיחזור גלילה דביק בדפדפנים מסוימים
+window.scrollTo(0, 0);
 setTimeout(() => { if (!location.hash) window.scrollTo(0, 0); }, 0);
 }
 }
 window.addEventListener('DOMContentLoaded', scrollTopIfNeeded);
 window.addEventListener('pageshow', (e) => { if (e.persisted) scrollTopIfNeeded(); });
 
-/* ---------- Theme toggle (מסנכרן html[data-theme] + body.light) ---------- */
+/* ---------- Theme toggle: מסנכרן html[data-theme] + body.light ---------- */
 const themeBtn = document.getElementById('themeToggle');
 const htmlEl = document.documentElement;
 const bodyEl = document.body;
 
 function applyTheme(mode){
-// סנכרון לשתי השיטות כדי שלא יהיו קונפליקטים עם CSS קיים
 htmlEl.setAttribute('data-theme', mode);
 bodyEl.classList.toggle('light', mode === 'light');
-
-// כפתור + שמירה
 themeBtn.textContent = (mode === 'light') ? '🌙' : '☀';
 localStorage.setItem('theme', mode);
 }
 
-// קביעה התחלתית: localStorage > מה־DOM > ברירת-מחדל dark
 const saved = localStorage.getItem('theme');
 const initial =
 saved ||
@@ -188,13 +183,12 @@ saved ||
 : (htmlEl.getAttribute('data-theme') === 'light' ? 'light' : 'dark'));
 applyTheme(initial);
 
-// החלפת מצב בלחיצה
 themeBtn.addEventListener('click', () => {
 const next = bodyEl.classList.contains('light') ? 'dark' : 'light';
 applyTheme(next);
 });
 
-/* ---------- Reveal-on-scroll (ללא שינוי) ---------- */
+/* ---------- Reveal-on-scroll ---------- */
 if (!window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
 const io = new IntersectionObserver(entries => {
 entries.forEach(e => e.isIntersecting && e.target.classList.add('in'));
@@ -204,6 +198,5 @@ document.querySelectorAll('.reveal').forEach(el => io.observe(el));
 document.querySelectorAll('.reveal').forEach(el => el.classList.add('in'));
 }
 </script>
-
 </body>
 </html>
