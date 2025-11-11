@@ -1,5 +1,5 @@
 <!doctype html>
-<html lang="en" data-theme="dark">
+<html lang="en">
 <head>
 <meta charset="utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
@@ -18,10 +18,8 @@
 </head>
 
 <body>
-<!-- רקע דקורטיבי אם מוגדר ב-CSS -->
 <div class="orbs" aria-hidden="true"></div>
 
-<!-- ===== Top bar ===== -->
 <header class="topbar reveal" role="banner">
 <div class="container">
 <div class="brand" aria-label="AutoRoy brand">
@@ -38,45 +36,11 @@
 </div>
 </header>
 
-<!-- ===== Main ===== -->
 <div class="wrap">
 <main id="main" role="main">
-<!-- Hero -->
-<section class="hero" aria-labelledby="hero-title">
-<div class="container">
-<div class="hero-inner reveal">
-<div class="logo-hero" aria-hidden="true">🚀</div>
-<h1 id="hero-title"><span class="brand">AutoRoy Cloud</span> — DevOps Demo</h1>
-<p class="subtitle">
-Static site on <b>Render CDN</b>, Dockerized with <b>Nginx</b>, auto-deploy from <b>GitHub</b>.
-</p>
-
-<div class="actions cta" role="group" aria-label="Primary actions">
-<a class="btn primary" href="#features">Explore</a>
-<a class="btn ghost" target="_blank" rel="noopener" href="https://github.com/autoroybiz-cpu/devops-training">GitHub repo</a>
-</div>
-
-<div class="stats" aria-label="Key highlights">
-<span class="pill">⚡ CDN • no wake-up</span>
-<span class="pill">🐳 Docker ready</span>
-<span class="pill">🔁 CI/CD on commit</span>
-</div>
-</div>
-
-<div class="hero-card reveal delay-2" aria-label="Quick start commands">
-<pre><code>git add .
-git commit -m "feat: live demo"
-git push # Render auto-deploys
-</code></pre>
-</div>
-</div>
-</section>
-
-<!-- ===== Service Status (תוספת חדשה) ===== -->
 <section class="features" aria-labelledby="status-title">
 <div class="container grid">
 <h2 id="status-title" class="sr-only" style="position:absolute;left:-9999px;">Service Status</h2>
-
 <article class="card reveal" aria-label="Service Status">
 <h3>Service Status</h3>
 <ul class="kv">
@@ -91,11 +55,8 @@ git push # Render auto-deploys
 </div>
 </section>
 
-<!-- Features -->
 <section id="features" class="features" aria-labelledby="features-title">
 <div class="container grid">
-<h2 id="features-title" class="sr-only" style="position:absolute;left:-9999px;">Features</h2>
-
 <article class="card reveal" aria-label="Blazing fast">
 <div class="ico" aria-hidden="true">🚀</div>
 <h3>Blazing fast</h3>
@@ -116,7 +77,6 @@ git push # Render auto-deploys
 </div>
 </section>
 
-<!-- Flow -->
 <section id="flow" class="flow" aria-labelledby="flow-title">
 <div class="container">
 <h2 id="flow-title" class="reveal">How it works</h2>
@@ -139,10 +99,8 @@ docker run -p 8080:80 autoroy-devops-demo
 </div>
 </section>
 
-<!-- Tech badges -->
 <section class="tech" aria-labelledby="stack-title">
 <div class="container badges reveal">
-<h2 id="stack-title" class="sr-only" style="position:absolute;left:-9999px;">Tech stack</h2>
 <span class="badge" aria-label="HTML5">HTML5</span>
 <span class="badge" aria-label="CSS3">CSS3</span>
 <span class="badge" aria-label="Nginx">Nginx</span>
@@ -152,9 +110,8 @@ docker run -p 8080:80 autoroy-devops-demo
 </div>
 </section>
 </main>
-</div><!-- /.wrap -->
+</div>
 
-<!-- ===== Footer ===== -->
 <footer class="footer" role="contentinfo">
 <div class="container">
 <p>
@@ -164,25 +121,29 @@ Built by <b>AutoRoy</b> · DevOps &amp; Automations •
 </div>
 </footer>
 
-<!-- ===== Scripts (Theme + Reveal) ===== -->
 <script>
-// Theme toggle (original)
-const root = document.documentElement;
-const btn = document.getElementById('themeToggle');
+// --- Theme toggle (works with body.light) ---
+const themeBtn = document.getElementById('themeToggle');
 
-const apply = (mode) => {
-root.setAttribute('data-theme', mode);
+function applyTheme(mode){
+if(mode === 'light'){
+document.body.classList.add('light');
+themeBtn.textContent = '🌙';
+}else{
+document.body.classList.remove('light');
+themeBtn.textContent = '☀';
+}
 localStorage.setItem('theme', mode);
-btn.textContent = mode === 'light' ? '🌙' : '☀';
-btn.setAttribute('aria-pressed', mode === 'dark' ? 'true' : 'false');
-};
+}
 
-const saved = localStorage.getItem('theme');
-apply(saved || root.getAttribute('data-theme') || 'dark');
+// מצב התחלתי
+const savedTheme = localStorage.getItem('theme');
+applyTheme(savedTheme || (document.body.classList.contains('light') ? 'light' : 'dark'));
 
-btn.addEventListener('click', () => {
-const next = root.getAttribute('data-theme') === 'dark' ? 'light' : 'dark';
-apply(next);
+// החלפה בלחיצה
+themeBtn.addEventListener('click', () => {
+const next = document.body.classList.contains('light') ? 'dark' : 'light';
+applyTheme(next);
 });
 
 // Reveal-on-scroll
@@ -195,5 +156,6 @@ document.querySelectorAll('.reveal').forEach(el => io.observe(el));
 document.querySelectorAll('.reveal').forEach(el => el.classList.add('in'));
 }
 </script>
+
 </body>
 </html>
