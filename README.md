@@ -65,26 +65,20 @@ GET /healthz
 "version": "1.0.0",
 "timestamp": 169921234567
 }
+
 ---
-
-
-
-
-
-
-
 
 📊 Monitoring & Status
 Live service uptime:
 ➡️ https://stats.uptimerobot.com/PACu1aRqlAttachment.png
 
-
+---
 
 🧠 About AutoRoy Cloud
 AutoRoy Cloud is a learning-grade DevOps environment created to simulate real-world CI/CD pipelines, showcasing automation, scalability, and reliability.
 Built to prove professional-level deployment and monitoring practices.
 
-
+---
 
 👨‍💻 Author
 Built by AutoRoy (Roy Aharonovich)
