@@ -1,0 +1,36 @@
+name: Health Check
+
+on:
+schedule:
+- cron: "*/30 * * * *" # כל חצי שעה
+workflow_dispatch:
+
+jobs:
+healthz:
+runs-on: ubuntu-latest
+steps:
+- name: Check service health
+run: |
+URL="https://hello-prod.onrender.com/healthz"
+echo "Checking $URL..."
+response=$(curl -s -o /tmp/health.json -w "%{http_code}" "$URL")
+echo "Status code: $response"
+cat /tmp/health.json
+
+if [ "$response" != "200" ]; then
+echo "❌ Health check failed!"
+exit 1
+fi
+
+echo "✅ Health OK"
+
+- name: Parse and validate JSON fields
+run: |
+version=$(jq -r '.version' /tmp/health.json)
+branch=$(jq -r '.branch' /tmp/health.json)
+build=$(jq -r '.build' /tmp/health.json)
+if [ -z "$version" ] || [ -z "$branch" ] || [ -z "$build" ]; then
+echo "❌ Missing expected fields!"
+exit 1
+fi
+echo "✅ All fields present: version=$version, branch=$branch, build=$build"
