@@ -390,3 +390,47 @@ text-shadow: 0 2px 14px rgba(0,0,0,.28);/* קונטרסט עדין */
 
 /* ביטוח נוסף נגד חיתוכים – אם יש כלל ישן מתנגש, זה יגבר */
 .wrap .hero h1{ white-space: normal; }
+/* === HERO — desktop polish === */
+@media (min-width: 961px){
+.hero{ padding:80px 0 88px; }
+.hero .container{ max-width: 1040px; }
+.hero .logo-hero{ font-size: clamp(68px, 6.8vw, 104px); margin-bottom: 12px; }
+.hero h1{
+font-size: clamp(44px, 5.2vw, 78px);
+line-height: 1.14; /* מונע "בליעת" אותיות */
+letter-spacing: .15px;
+overflow: visible; /* לא לחתוך זוהרים/גרדיאנט */
+text-wrap: balance; /* שתי שורות מאוזנות */
+margin: 0 0 12px;
+}
+.hero .subtitle{ max-width: 680px; font-size: 17.5px; }
+}
+/* === HERO — mobile punch === */
+@media (max-width: 600px){
+.hero{ padding: 44px 0 58px; }
+.hero .logo-hero{ font-size: clamp(62px, 15vw, 98px); margin-bottom: 10px; }
+.hero h1{
+font-size: clamp(34px, 9.5vw, 54px);
+line-height: 1.18;
+margin: 0 0 10px;
+}
+.hero .subtitle{ max-width: 92%; font-size: clamp(15px,3.6vw,17px); }
+}
+/* === Home spacing tighten (safe) === */
+.wrap{ padding-top: 80px; } /* היה גבוה יותר */
+.features{ padding: 0; }
+.grid{ gap: 16px; } /* היה 18–22 */
+/* === Mobile topbar align right (global + health) === */
+@media (max-width:600px){
+.topbar .container{ padding-inline:16px; gap:12px; }
+.brand{ min-width:120px; flex:0 0 auto; } /* AutoRoy לא נחתך */
+.nav{ margin-left:auto; gap:12px; }
+.nav a{ padding:6px 8px; font-size:14px; }
+.nav .pill{ margin-left:auto; } /* View source הכי ימינה */
+}
+body.health .topbar .container{ padding-inline:16px; gap:12px; }
+body.health .brand{ min-width:120px; flex:0 0 auto; }
+body.health .nav{ margin-left:auto; gap:12px; }
+body.health .nav .pill{ margin-left:auto; }
+/* === Branded word visibility === */
+.brand{ text-shadow: 0 2px 18px rgba(0,0,0,.28); }
