@@ -539,11 +539,3 @@ line-height:1.1; text-align:center;
 .hero h1{ font-size: clamp(28px, 6vw, 44px); }
 .hero .subtitle{ max-width:90%; }
 }
-
-/* === Status list: no overflow on mobile === */
-.features .card ul.kv{ list-style:none; padding-left:0; margin:10px 0 0; }
-.features .kv{
-display:grid; grid-template-columns:auto 1fr; gap:6px 10px; align-items:center;
-}
-.features .kv b{ white-space:nowrap; }
-.features .kv span{ max-width:100%; overflow-wrap:anywhere; word-break:break-word; }
