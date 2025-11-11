@@ -1,0 +1,18 @@
+name: CI basic
+
+on:
+push:
+branches: [ "main" ]
+pull_request:
+branches: [ "main" ]
+
+permissions:
+contents: read
+
+jobs:
+sanity:
+name: Sanity
+runs-on: ubuntu-latest
+steps:
+- name: Hello
+run: echo "CI loaded OK"
