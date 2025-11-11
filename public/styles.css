@@ -461,3 +461,47 @@ font-size: clamp(28px, 6vw, 44px);
 max-width: 90%;
 }
 }
+/* === Fix hero perfect centering (desktop & mobile) === */
+.hero .container{
+max-width: 980px; /* מגביל רוחב כדי למרכז יפה */
+margin: 0 auto;
+}
+.hero-inner{
+display: flex;
+flex-direction: column;
+align-items: center; /* מרכז אופקי */
+text-align: center; /* מרכז טקסט */
+}
+.hero-inner .logo-hero{
+margin: 0 auto 10px; /* הרוקט יישב בדיוק באמצע */
+}
+.hero h1{
+margin: 0 0 8px;
+line-height: 1.1;
+text-align: center;
+}
+
+/* === Polish topbar on mobile (no drift/overflow) === */
+.topbar .container{
+max-width: 1200px; /* יישור ואחידות דסקטופ */
+margin: 0 auto;
+padding-inline: 16px;
+display: flex;
+align-items: center;
+justify-content: space-between;
+gap: 16px;
+min-height: 56px;
+}
+.brand, .nav{ min-width: 0; } /* מונע “דחיפות” כשהרוחב קטן */
+.nav{ gap: 18px; }
+
+/* מובייל: טיפה מקטינים רווחים כדי שלא יתפזר למעלה */
+@media (max-width: 600px){
+.topbar .container{ padding-inline: 12px; gap: 12px; }
+.nav{ gap: 12px; }
+.nav a{ padding: 6px 8px; font-size: 14px; }
+}
+
+/* === Safety: שורות סטטוס לא ישברו/יזרקו אל מחוץ לכרטיס במובייל === */
+.kv{ flex-wrap: wrap; } /* אם צריך, יורד שורה בצורה מסודרת */
+.kv span, .kv b{ white-space: nowrap; }
