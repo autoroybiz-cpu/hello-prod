@@ -67,6 +67,8 @@ GET /healthz
 }
 
 ---
+
+
 📊 Monitoring & Status
 Live service uptime:
 ➡️ https://stats.uptimerobot.com/PACu1aRqlAttachment.png
