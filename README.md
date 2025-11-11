@@ -4,7 +4,7 @@
 [![Build & Push](https://github.com/autoroybiz-cpu/hello-prod/actions/workflows/cicd.yml/badge.svg)](https://github.com/autoroybiz-cpu/hello-prod/actions/workflows/cicd.yml)
 
 > 🧠 **AutoRoy Cloud** — Full-stack DevOps demo with Docker, CI/CD, Render, and live health monitoring.
-> Built and maintained by [AutoRoy AI](https://github.com/autoroybiz-cpu).
+> Built and maintained by AutoRoy AI](https://github.com/autoroybiz-cpu).
 
 ---
 
