@@ -67,7 +67,7 @@ GET /healthz
 }
 
 ---
-
+---
 
 📊 Monitoring & Status
 Live service uptime:
