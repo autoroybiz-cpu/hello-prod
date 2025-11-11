@@ -1,0 +1,53 @@
+name: CI
+
+on:
+push:
+branches: [ "main" ]
+pull_request:
+branches: [ "main" ]
+schedule:
+- cron: "17 3 * * *" # פעם ביום לבדוק קישורים ובריאות
+
+jobs:
+prettier:
+name: Prettier check
+runs-on: ubuntu-latest
+steps:
+- uses: actions/checkout@v4
+- uses: actions/setup-node@v4
+with:
+node-version: 20
+- name: Run Prettier (check only)
+run: npx --yes prettier@3.3.3 --check "**/*.{html,css,js,md,yml,yaml}"
+
+links:
+name: Link check (README + HTML)
+runs-on: ubuntu-latest
+steps:
+- uses: actions/checkout@v4
+- name: Lychee broken links
+uses: lycheeverse/lychee-action@v1
+with:
+args: >
+--verbose
+--no-progress
+--max-concurrency 6
+--retry-wait-time 2
+--accept 200,206,429
+**/*.md **/*.html
+env:
+GITHUB_TOKEN: ${{secrets.GITHUB_TOKEN }}
+
+health:
+name: Health endpoint
+runs-on: ubuntu-latest
+steps:
+- name: Curl /healthz
+run: |
+URL="${{ vars.SITE_URL }}"
+if [ -z "$URL" ]; then URL="https://hello-prod.onrender.com/healthz"; fi
+echo "Checking $URL"
+http_code=$(curl -s -o /tmp/body -w "%{http_code}" "$URL")
+echo "Status: $http_code"
+cat /tmp/body
+test "$http_code" = "200"
