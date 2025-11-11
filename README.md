@@ -49,4 +49,4 @@ git clone https://github.com/autoroybiz-cpu/hello-prod.git
 cd hello-prod
 npm install
 npm start
-# open http://localhost:3000
+# [open http://localhost:3000](https://hello-prod.onrender.com/health)
