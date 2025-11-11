@@ -356,3 +356,35 @@ box-shadow: 0 14px 30px rgba(0,0,0,.35);
 
 /* מרווח תוכן בגלל הטופבר הסטיקי */
 .wrap{ padding-top:96px; }
+/* ===== Big center theme toggle ===== */
+.theme-row{
+margin:18px 0 8px;
+display:flex; justify-content:center;
+}
+
+.theme-toggle{
+--bd: rgba(255,255,255,.18);
+--glow: rgba(103,232,249,.35);
+display:inline-flex; align-items:center; gap:10px;
+padding:12px 18px; border-radius:14px;
+border:1px solid var(--bd);
+background:linear-gradient(180deg, rgba(255,255,255,.12), rgba(255,255,255,.06));
+color:#fff; font-weight:800; letter-spacing:.2px;
+box-shadow: 0 10px 26px rgba(0,0,0,.28), 0 0 0 0 var(--glow);
+transform: translateZ(0);
+transition: box-shadow .25s ease, transform .2s ease, border-color .2s ease;
+}
+.theme-toggle .icon{ font-size:20px; line-height:1 }
+.theme-toggle .label{ font-size:14px; opacity:.95 }
+
+.theme-toggle:hover{
+transform: translateY(-2px);
+border-color: rgba(255,255,255,.28);
+box-shadow: 0 16px 36px rgba(0,0,0,.35), 0 0 0 6px var(--glow);
+}
+/* מצב Light – ניטרלי ונקי */
+:root[data-theme="light"] .theme-toggle,
+body.light .theme-toggle{
+background:linear-gradient(180deg, rgba(0,0,0,.06), rgba(0,0,0,.03));
+color:var(--text);
+}
