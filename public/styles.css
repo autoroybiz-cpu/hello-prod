@@ -505,3 +505,45 @@ min-height: 56px;
 /* === Safety: שורות סטטוס לא ישברו/יזרקו אל מחוץ לכרטיס במובייל === */
 .kv{ flex-wrap: wrap; } /* אם צריך, יורד שורה בצורה מסודרת */
 .kv span, .kv b{ white-space: nowrap; }
+/* === HERO perfect centering (desktop + mobile) === */
+.topbar .container{
+width:min(1180px,92vw);
+margin:0 auto;
+padding-inline:16px;
+display:flex; align-items:center; justify-content:space-between; gap:16px;
+min-height:56px;
+}
+
+.hero .container{
+max-width:980px; /* מגביל רוחב כדי למרכז יפה */
+margin:0 auto;
+}
+.hero-inner{
+display:flex; flex-direction:column;
+align-items:center; text-align:center; /* מרכז טקסט ואובייקטים */
+}
+.hero-inner .logo-hero{
+margin:0 auto 12px; /* הרקטה בדיוק באמצע */
+}
+.hero h1{
+margin:6px 0 12px;
+line-height:1.1; text-align:center;
+}
+
+/* מובייל: משמר טופ־בר נקי ולא “בורח” לאמצע */
+@media (max-width:600px){
+.topbar .container{ padding-inline:12px; gap:12px; }
+.nav{ gap:12px; }
+.nav a{ padding:6px 8px; font-size:14px; }
+.hero{ padding:32px 0 48px; }
+.hero h1{ font-size: clamp(28px, 6vw, 44px); }
+.hero .subtitle{ max-width:90%; }
+}
+
+/* === Status list: no overflow on mobile === */
+.features .card ul.kv{ list-style:none; padding-left:0; margin:10px 0 0; }
+.features .kv{
+display:grid; grid-template-columns:auto 1fr; gap:6px 10px; align-items:center;
+}
+.features .kv b{ white-space:nowrap; }
+.features .kv span{ max-width:100%; overflow-wrap:anywhere; word-break:break-word; }
