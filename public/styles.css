@@ -539,3 +539,28 @@ line-height:1.1; text-align:center;
 .hero h1{ font-size: clamp(28px, 6vw, 44px); }
 .hero .subtitle{ max-width:90%; }
 }
+  /* === Mobile topbar: push nav right & place "View source" at far right === */
+@media (max-width: 600px){
+.topbar .container{
+padding-left: calc(env(safe-area-inset-left) + 14px);
+padding-right: calc(env(safe-area-inset-right) + 14px);
+gap: 12px;
+}
+
+/* השם AutoRoy לא נחתך */
+.brand{ flex:0 0 auto; min-width:fit-content; overflow:visible; }
+.brand .brand-name{ white-space:nowrap; }
+
+/* כל הניווט נדחף ימינה */
+.nav{ flex:1; display:flex; align-items:center; gap:12px; margin-left:auto; }
+
+/* סדר עדיפויות בתוך הניווט:
+1) Features / How it works | 2) ... רווח גמיש ... | 3) View source | 4) ☾/☀ */
+.nav a:not(.pill){ order:1; } /* הלינקים השמאליים */
+.nav .pill{ order:3; margin-left:auto; }/* "View source" נדחף לקצה הימני */
+#themeToggle{ order:4; margin-left:8px; }
+
+/* קצת מיקורטור לתצוגה צפופה */
+.nav a{ font-size:15px; padding:6px 8px; }
+.btn.pill{ padding:8px 10px; font-size:14px; }
+}
