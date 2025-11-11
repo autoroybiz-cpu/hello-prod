@@ -2,7 +2,8 @@
 
 [![CI/CD](https://github.com/autoroybiz-cpu/hello-prod/actions/workflows/ci.yml/badge.svg)](https://github.com/autoroybiz-cpu/hello-prod/actions/workflows/ci.yml)
 [![Build & Push](https://github.com/autoroybiz-cpu/hello-prod/actions/workflows/cicd.yml/badge.svg)](https://github.com/autoroybiz-cpu/hello-prod/actions/workflows/cicd.yml)
-ur3171696-52faced7ac4be8b73a9b709b
+[![Status](https://img.shields.io/uptimerobot/status/ur3171696-52faced7ac4be8b73a9b709b-cd6b1d5e2f46e22b7adxxxxxx.svg?label=Uptime&color=2ecc71)](https://stats.uptimerobot.com/PACu1aRql)
+[![Uptime](https://img.shields.io/uptimerobot/ratio/ur3171696-52faced7ac4be8b73a9b709b-cd6b1d5e2f46e22b7adxxxxxx.svg?label=Uptime%20Ratio)](https://stats.uptimerobot.com/PACu1aRql)
 
 > Production-grade **CI/CD pipeline** demo for a Dockerized web service, built and deployed automatically via **GitHub Actions** + **Render**.
 
