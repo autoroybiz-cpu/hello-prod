@@ -2,9 +2,11 @@ name: CI basic
 
 on:
 push:
-branches: [ "main" ]
+branches:
+- main
 pull_request:
-branches: [ "main" ]
+branches:
+- main
 
 permissions:
 contents: read
@@ -15,4 +17,4 @@ name: Sanity
 runs-on: ubuntu-latest
 steps:
 - name: Hello
-run: echo "CI loaded OK"
+run: echo "✅ CI loaded OK — syntax good"
