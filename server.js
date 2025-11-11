@@ -1,5 +1,4 @@
-// server.js (ESM)
-
+// server.js (ESM) — Pro tier, no extra deps
 import express from "express";
 import path from "path";
 import { fileURLToPath } from "url";
@@ -10,33 +9,123 @@ const __dirname = path.dirname(__filename);
 
 const app = express();
 
+/* ========= Config ========= */
 const PORT = process.env.PORT || 3000;
 const VERSION = process.env.APP_VERSION || "1.0.0";
-const BUILD = process.env.APP_BUILD || "dev";
+const BUILD_RAW = process.env.APP_BUILD || process.env.RENDER_GIT_COMMIT || "dev";
+const BUILD = String(BUILD_RAW).slice(0, 7);
 const DEPLOYED_AT = process.env.APP_DEPLOYED_AT || new Date().toISOString();
-const START = Date.now();
+const BRANCH = process.env.APP_BRANCH || process.env.RENDER_GIT_BRANCH || "main";
+const STARTED_AT = Date.now();
 
-// קבצים סטטיים מתיקיית public
-app.use(express.static(path.join(__dirname, "public")));
-
-// דף בית
-app.get("/", (_req, res) => {
-res.sendFile(path.join(__dirname, "public", "index.html"));
+/* ========= Tiny logger ========= */
+app.use((req, res, next) => {
+const t0 = Date.now();
+res.on("finish", () => {
+const ms = Date.now() - t0;
+console.log(`${req.method} ${req.originalUrl} → ${res.statusCode} (${ms}ms)`);
+});
+next();
 });
 
-// בדיקת חיים
+/* ========= Trust proxy + gentle HTTPS redirect (for Render/Proxy) ========= */
+app.set("trust proxy", true);
+app.use((req, res, next) => {
+const proto = req.get("x-forwarded-proto");
+if (proto && proto !== "https") {
+// שמירה על querystring
+return res.redirect(301, `https://${req.get("host")}${req.originalUrl}`);
+}
+next();
+});
+
+/* ========= Static assets with caching ========= */
+const staticDir = path.join(__dirname, "public");
+app.use(
+express.static(staticDir, {
+etag: true,
+lastModified: true,
+maxAge: "5m",
+setHeaders: (res, filePath) => {
+// קבצי build עם hash מקבלים קאש ארוך יותר (אם יש)
+if (/\.[0-9a-f]{8,}\.(css|js|png|jpg|svg)$/.test(filePath)) {
+res.setHeader("Cache-Control", "public, max-age=31536000, immutable");
+} else {
+res.setHeader("Cache-Control", "public, max-age=300");
+}
+res.setHeader("X-Content-Type-Options", "nosniff");
+},
+})
+);
+
+/* ========= Health ========= */
 app.get("/healthz", (_req, res) => {
-res.status(200).json({
+const uptimeSec = Math.round((Date.now() - STARTED_AT) / 1000);
+return res.status(200).json({
 status: "ok",
 version: VERSION,
+branch: BRANCH,
 build: BUILD,
 deployedAt: DEPLOYED_AT,
-uptime: Math.round((Date.now() - START) / 1000) + "s",
-timestamp: Date.now(),
+uptimeSec,
+startedAt: new Date(STARTED_AT).toISOString(),
+now: new Date().toISOString(),
 });
 });
 
-// הפעלת השרת
-app.listen(PORT, () => {
-console.log(`🚀 Server running on port ${PORT}`);
+/* ========= Prometheus metrics ========= */
+app.get("/metrics", (_req, res) => {
+const uptimeSec = Math.round((Date.now() - STARTED_AT) / 1000);
+res.set("Content-Type", "text/plain; version=0.0.4; charset=utf-8");
+// שמות מטריקות פשוטים וברורים
+res.send(
+`# HELP app_info Static labels about this app
+# TYPE app_info gauge
+app_info{version="${VERSION}",branch="${BRANCH}",build="${BUILD}"} 1
+
+# HELP app_uptime_seconds Uptime of the app in seconds
+# TYPE app_uptime_seconds counter
+app_uptime_seconds ${uptimeSec}
+
+# HELP http_healthz_last_status Last known /healthz status code
+# TYPE http_healthz_last_status gauge
+http_healthz_last_status 200
+`
+);
 });
+
+/* ========= Root & SPA fallback ========= */
+app.get("/", (_req, res) => {
+res.sendFile(path.join(staticDir, "index.html"));
+});
+
+// שמור על API נתיבים למעלה מה-fallback.
+// כל Route אחר (שאינו קיים בסטטי/ב-API) יחזיר index.html (SPA)
+app.get("*", (req, res, next) => {
+if (req.path.startsWith("/api/") || req.path.startsWith("/metrics") || req.path.startsWith("/healthz")) {
+return next();
+}
+res.sendFile(path.join(staticDir, "index.html"));
+});
+
+/* ========= Start ========= */
+const server = app.listen(PORT, () => {
+console.log(`🚀 AutoRoy Cloud listening on :${PORT} (v${VERSION} / ${BUILD} @ ${BRANCH})`);
+});
+
+/* ========= Graceful shutdown ========= */
+function shutdown(signal) {
+console.log(`\n${signal} received. Closing server...`);
+server.close(err => {
+if (err) {
+console.error("Error during close:", err);
+process.exit(1);
+}
+console.log("Server closed. Bye 👋");
+process.exit(0);
+});
+// Force-exit אם משהו נתקע
+setTimeout(() => process.exit(0), 8000).unref();
+}
+process.on("SIGTERM", () => shutdown("SIGTERM"));
+process.on("SIGINT", () => shutdown("SIGINT"));
