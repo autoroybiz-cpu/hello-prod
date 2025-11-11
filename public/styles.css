@@ -388,3 +388,32 @@ body.light .theme-toggle{
 background:linear-gradient(180deg, rgba(0,0,0,.06), rgba(0,0,0,.03));
 color:var(--text);
 }
+/* ===== Fix 1: Topbar alignment & centering ===== */
+.topbar .container{
+width:min(1180px,92vw);
+margin:0 auto; /* מרכז את הבר כמו התוכן */
+padding:12px 0;
+display:flex;
+align-items:center;
+justify-content:space-between; /* כותרת ישרה ופיזור נכון */
+gap:16px;
+}
+
+/* קונטיינר כללי לשימוש בחלקים נוספים (Hero וכו') */
+.container{ width:min(1180px,92vw); margin:0 auto; }
+
+/* ===== Fix 2: Uptime wraps nicely on mobile ===== */
+.kv{ display:flex; flex-wrap:wrap; gap:8px 12px; }
+.kv li{ display:flex; align-items:center; gap:8px; }
+.kv b{ white-space:nowrap; }
+.kv span{ max-width:60vw; overflow-wrap:anywhere; word-break:break-word; }
+
+/* כרטיס ה-Status – מניעת גלישה לרוחב */
+.features .card ul{ padding-left:0; list-style: none; }
+
+/* התאמות מסך קטן */
+@media (max-width: 480px){
+.kv{ display:grid; grid-template-columns:auto 1fr; gap:6px 10px; }
+.kv li{ display:contents; } /* מיישר את הזוגות כותרת/ערך לשתי עמודות */
+.kv span{ max-width:100%; } /* מרשה שבירה מלאה בתוך המסגרת */
+.hero .subtitle{ line-height:1.4; } /* קצת צפוף יותר כדי למנוע דחיפות למטה */
