@@ -1,233 +1,95 @@
-/* ===== AutoRoy Cloud — Aurora UI v3 (mobile-first, iOS-safe) ===== */
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1" />
+<title>AutoRoy Cloud • CI/CD Demo</title>
+<link rel="icon" href="/favicon.svg" />
+<link rel="stylesheet" href="/styles.css" />
+</head>
+<body>
 
-/* ---------- Theme variables (Dark) ---------- */
-:root{
---bg1:#0b1220; /* deeper slate */
---bg2:#0f1c37;
---acc1:#8b5cf6; /* violet */
---acc2:#06b6d4; /* cyan */
---acc3:#22c55e; /* green */
---acc4:#f472b6; /* pink */
---text:#eef2ff; /* soft white-blue */
---muted:#a7b0c4;
---card:rgba(255,255,255,.08);
---border:rgba(255,255,255,.16);
---shadow:0 28px 70px rgba(3,10,25,.55), 0 10px 22px rgba(3,10,25,.35);
---radius:18px;
-}
+<!-- ===== Header ===== -->
+<header class="hero fade-in">
+<span class="logo-bob logo-hero" aria-hidden="true">🚀</span>
+<h1>Welcome to <span class="brand">AutoRoy Cloud</span></h1>
+<h2 class="subtitle">Continuous Deployment Demo</h2>
 
-/* ---------- Theme variables (Light) ---------- */
-body.light{
---bg1:#f7f9ff;
---bg2:#e9eefb;
---text:#0b0f19;
---muted:#3b4a7a;
---card:rgba(0,0,0,.06);
---border:rgba(0,0,0,.12);
---shadow:0 18px 44px rgba(0,0,0,.15), 0 8px 18px rgba(0,0,0,.08);
-}
+<!-- כפתור מצב יום/לילה -->
+<button id="themeToggle" class="btn ghost small">☀️</button>
+</header>
 
-*{box-sizing:border-box}
-html,body{height:100%}
-html,body{
-margin:0;
-padding:0;
-overflow-x:hidden; /* מונע גלילה אופקית ופסים מוזרים */
-}
+<!-- ===== Main Content ===== -->
+<main class="grid fade-in">
 
-/* ===== Base ===== */
-body{
-color:var(--text);
-font:16px/1.6 ui-sans-serif,-apple-system,Segoe UI,Roboto,Arial;
-/* iOS safe area: לא לתת לתוכן "להיכנס" מתחת ל-notch */
-padding-top: env(safe-area-inset-top);
-padding-left: env(safe-area-inset-left);
-padding-right: env(safe-area-inset-right);
-padding-bottom: env(safe-area-inset-bottom);
+<!-- Service Status -->
+<section class="card">
+<h3>Service Status</h3>
+<ul class="kv">
+<li><b>Status:</b> <span id="status" class="ok">Loading...</span></li>
+<li><b>Version:</b> <span id="version"></span></li>
+<li><b>Build:</b> <span id="build"></span></li>
+<li><b>Deployed:</b> <span id="deployed"></span></li>
+<li><b>Uptime:</b> <span id="uptime"></span></li>
+</ul>
+<div class="pill">Live: <a href="/healthz" target="_blank">/healthz</a></div>
+</section>
 
-/* רקע "אורורה" ללא background-attachment: fixed (בעייתי ב-iOS) */
-background:
-radial-gradient(1200px 600px at 8% -10%, rgba(77,70,206,.55) 0%, transparent 60%),
-radial-gradient(900px 460px at 92% 0%, rgba(6,182,212,.55) 0%, transparent 58%),
-radial-gradient(1000px 520px at 50% 110%, rgba(244,114,182,.45) 0%, transparent 60%),
-linear-gradient(135deg,var(--bg1),var(--bg2));
-background-repeat:no-repeat;
-background-size:cover;
-animation:bgHue 22s ease-in-out infinite alternate;
-}
+<!-- Pipeline -->
+<section class="card">
+<h3>Pipeline</h3>
+<ol class="steps">
+<li>GitHub Actions → Build & Push Docker image</li>
+<li>Render Deploy Hook → Auto deploy</li>
+<li>UptimeRobot → Monitor /healthz</li>
+</ol>
+<p>Status: <b>Live</b> • Build: <span id="build-info">${BUILD}</span></p>
+<p>Monitoring: UptimeRobot</p>
+<div class="actions">
+<a href="/healthz" class="btn primary" target="_blank">Open /healthz</a>
+<a href="https://github.com/" class="btn ghost" target="_blank">View Source</a>
+</div>
+<p><b>Version:</b> ${VERSION}<br><b>Last deployed:</b> ${DEPLOYED_AT}</p>
+</section>
 
-/* Animated hue/sat shift (עדין) */
-@keyframes bgHue{
-0% { filter:hue-rotate(0deg) saturate(105%) }
-100%{ filter:hue-rotate(18deg) saturate(118%) }
-}
+<!-- About -->
+<section class="card">
+<h3>About</h3>
+<p>Built with <b>Node.js</b>, <b>Express</b>, <b>Docker</b>, <b>GitHub Actions</b> and <b>Render</b>.</p>
+<p>Owner: <b>AutoRoy AI</b> • Cloud DevOps Demo</p>
+</section>
 
-/* Decorative orbs — במקום fixed (גורם “פסים” ב-iOS), נשתמש ב-absolute בתוך עטיפה */
-.orbs{ position:fixed; inset:0; pointer-events:none; z-index:-1; overflow:hidden; }
-.orbs::before, .orbs::after{
-content:"";
-position:absolute;
-width:55vmin; height:55vmin; border-radius:50%;
-filter:blur(42px);
-mix-blend-mode:screen; opacity:.65;
-}
-.orbs::before{ left:-12vmin; top:-8vmin;
-background:radial-gradient(circle at 30% 30%, rgba(139,92,246,.45), transparent 60%);
-}
-.orbs::after{ right:-16vmin; bottom:-12vmin;
-background:radial-gradient(circle at 70% 70%, rgba(6,182,212,.40), transparent 60%);
+</main>
+
+<!-- ===== Footer ===== -->
+<footer>
+AutoRoy AI © 2025 — Powered by Render & GitHub Actions
+</footer>
+
+<!-- ===== Theme Toggle Script ===== -->
+<script>
+const body = document.body;
+const toggle = document.getElementById("themeToggle");
+
+// טוען מצב שמור (אם קיים)
+if (localStorage.getItem("theme") === "light") {
+body.classList.add("light");
 }
 
-/* ---------- Layout ---------- */
-.wrap{ width:min(1180px,92vw); margin:0 auto; padding:84px 0 56px; }
-.hero{ text-align:center; margin: 18px 0 28px; }
+// מאזין ללחיצה על הכפתור
+toggle.addEventListener("click", () => {
+body.classList.toggle("light");
+const mode = body.classList.contains("light") ? "light" : "dark";
+localStorage.setItem("theme", mode);
+toggle.textContent = mode === "light" ? "🌙" : "☀️";
+});
 
-h1{
-margin:0 0 10px;
-font-size: clamp(36px, 5.6vw, 60px);
-letter-spacing:.3px;
-line-height:1.1;
-color:var(--text);
-text-shadow: 0 10px 40px rgba(0,0,0,.35);
-}
-.subtitle{
-margin:0 auto;
-color:var(--muted);
-font-size: clamp(14px, 2.2vw, 18px);
-}
+// קובע את האייקון ההתחלתי
+toggle.textContent = body.classList.contains("light") ? "🌙" : "☀️";
+</script>
 
-/* gradient רק על המילה הממותגת */
-.brand{
-background:linear-gradient(90deg,#fff, #a5b4fc 45%, #67e8f9 75%, #a7f3d0 100%);
--webkit-background-clip:text; background-clip:text; color:transparent;
-}
-
-/* ---------- Cards grid ---------- */
-.grid{
-margin:34px auto 0;
-display:grid; gap:22px;
-grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-}
-.card{
-position:relative;
-border-radius:var(--radius);
-background:linear-gradient(180deg, rgba(255,255,255,.10), rgba(255,255,255,.06));
-border:1px solid var(--border);
-/* backdrop-filter בעייתי במובייל → נרכך, ונכבה ספציפית ב-iOS בהמשך */
-backdrop-filter: blur(9px);
--webkit-backdrop-filter: blur(9px);
-box-shadow: var(--shadow);
-padding:22px 22px 20px;
-transform: translateZ(0);
-transition: transform .35s cubic-bezier(.2,.6,.2,1), box-shadow .35s ease;
-}
-.card:hover{
-transform: translateY(-6px) scale(1.01);
-box-shadow: 0 35px 80px rgba(0,0,0,.45), 0 12px 26px rgba(0,0,0,.30);
-}
-.card h3{ margin:0 0 10px; font-size:18px; letter-spacing:.2px; }
-.card p, .card li{ color:#dbe2ef; }
-.card .muted{ color:var(--muted) }
-
-/* list reset */
-ul{margin:10px 0 0 18px; padding:0}
-li{margin:6px 0}
-
-/* metric rows */
-.kv{ display:flex; align-items:center; gap:8px; margin:6px 0 }
-.kv b{ color:#eaf2ff }
-
-/* status pill */
-.pill{
-display:inline-flex; align-items:center; gap:8px;
-padding:8px 12px; border-radius:999px; margin-top:10px;
-background:linear-gradient(90deg, rgba(139,92,246,.22), rgba(6,182,212,.22));
-border:1px solid rgba(139,92,246,.45);
-color:#f1e8ff; font-weight:600;
-}
-
-/* ---------- Buttons ---------- */
-.actions{ margin-top:14px; display:flex; flex-wrap:wrap; gap:10px }
-.btn{
---ring: rgba(103,232,249,.55);
-display:inline-flex; align-items:center; gap:10px;
-padding:12px 16px; border-radius:12px;
-font-weight:700; letter-spacing:.2px; text-decoration:none; color:#fff;
-border:1px solid var(--border);
-background:rgba(28,34,56,.66);
-box-shadow: 0 6px 18px rgba(0,0,0,.30);
-text-shadow: 0 1px 2px rgba(0,0,0,.35);
-transition: transform .2s ease, border-color .2s ease, box-shadow .2s ease, background .2s ease;
-}
-.btn:hover{
-transform: translateY(-2px);
-border-color: rgba(255,255,255,.35);
-box-shadow: 0 12px 32px var(--ring);
-}
-.btn.primary{
-background: linear-gradient(90deg, var(--acc1) 0%, var(--acc2) 45%, var(--acc3) 75%, var(--acc4) 100%);
-border-color: transparent;
-}
-.btn.ghost{ background: transparent; }
-
-/* tiny badge row */
-.badges{ margin-top:8px; display:flex; flex-wrap:wrap; gap:8px }
-.badges img{ height:20px; opacity:.95; filter:drop-shadow(0 2px 8px rgba(0,0,0,.35))}
-
-/* ---------- Footer ---------- */
-footer{
-margin:34px 0 0;
-color:var(--muted);
-text-align:center;
-font-size:13px; opacity:.9;
-}
-
-/* ---------- Rocket ---------- */
-.logo-hero{
-font-size: clamp(56px, 8.4vw, 96px);
-filter: drop-shadow(0 12px 28px rgba(0,0,0,.45));
-position: relative; display:inline-block;
-transform-origin:50% 80%;
-animation: bob 3.2s ease-in-out infinite;
-}
-.logo-hero::after{ /* flame */
-content:"";
-position:absolute; left:-14px; top:62%;
-width:14px; height:14px; border-radius:50%;
-background: radial-gradient(circle at 30% 30%, #ffd166 0%, #fb923c 55%, transparent 70%);
-filter: blur(1.6px) brightness(1.1);
-animation: thrust .6s ease-in-out infinite;
-}
-@keyframes bob{ 0%,100%{ transform: translateY(0) rotate(-2deg) } 50%{ transform: translateY(-6px) rotate(2deg) } }
-@keyframes thrust{ 0%,100%{ transform: translateX(-3px) scale(.85); opacity:.65 } 50%{ transform: translateX(-7px) scale(1.15); opacity:1 } }
-
-/* ---------- Mode toggle button (optional) ---------- */
-#modeBtn{
-position:fixed; right:16px; top:calc(16px + env(safe-area-inset-top));
-border:1px solid var(--border);
-background:linear-gradient(180deg, rgba(255,255,255,.10), rgba(255,255,255,.06));
-color:var(--text); padding:8px 12px; border-radius:12px;
-cursor:pointer; box-shadow: var(--shadow); z-index:20;
-}
-#modeBtn:hover{ transform: translateY(-1px); }
-
-/* ---------- Small screens ---------- */
-@media (max-width:600px){
-.wrap{ padding:68px 0 46px }
-.actions{ justify-content:center }
-.btn{ width:100%; justify-content:center; padding:14px; font-size:16px }
-}
-
-/* ===== iOS specific hardening ===== */
-@supports (-webkit-touch-callout: none) {
-/* iOS: לבטל fixed-attachment אפקטיבית (כבר לא בשימוש פה) ולרכך זכוכית */
-.card{
-backdrop-filter:none; -webkit-backdrop-filter:none;
-background:rgba(255,255,255,.08);
-}
-}
-
-/* ===== Accessibility: פחות תנועה למי שמעדיף ===== */
+</body>
+</html>
 @media (prefers-reduced-motion: reduce){
 *{ animation:none !important; transition:none !important }
 }
