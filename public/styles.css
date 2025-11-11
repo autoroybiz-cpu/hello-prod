@@ -1,87 +1,55 @@
-/* ===== AutoRoy Cloud — Aurora UI v3 (mobile-first, iOS-safe) ===== */
+/* ===== AutoRoy Cloud — Aurora UI v4 (mobile-first, iOS-safe, prod-polish) ===== */
 
 /* ---------- Theme variables (Dark) ---------- */
 :root{
---bg1:#0b1220; /* deeper slate */
---bg2:#0f1c37;
---acc1:#8b5cf6; /* violet */
---acc2:#06b6d4; /* cyan */
---acc3:#22c55e; /* green */
---acc4:#f472b6; /* pink */
---text:#eef2ff; /* soft white-blue */
---muted:#a7b0c4;
---card:rgba(255,255,255,.08);
---border:rgba(255,255,255,.16);
+--bg1:#0b1220; --bg2:#0f1c37;
+--acc1:#8b5cf6; --acc2:#06b6d4; --acc3:#22c55e; --acc4:#f472b6;
+--text:#eef2ff; --muted:#a7b0c4;
+--card:rgba(255,255,255,.08); --border:rgba(255,255,255,.16);
 --shadow:0 28px 70px rgba(3,10,25,.55), 0 10px 22px rgba(3,10,25,.35);
 --radius:18px;
+--ring: rgba(103,232,249,.55);
+--ring-strong: rgba(103,232,249,.75);
 }
 
-/* ---------- Theme variables (Light) ---------- */
-/* Light theme variables (תומך גם ב-html[data-theme="light"]) */
-:root[data-theme="light"],
-html[data-theme="light"],
-body.light{
---bg1:#f7f9ff;
---bg2:#e9eefb;
---text:#0b0f19;
---muted:#3b4a7a;
---card:rgba(0,0,0,.06);
---border:rgba(0,0,0,.12);
+:root[data-theme="light"], html[data-theme="light"], body.light{
+--bg1:#f7f9ff; --bg2:#e9eefb;
+--text:#0b0f19; --muted:#3b4a7a;
+--card:rgba(0,0,0,.06); --border:rgba(0,0,0,.12);
 --shadow:0 18px 44px rgba(0,0,0,.15), 0 8px 18px rgba(0,0,0,.08);
 }
 
-/* עוזר לדפדפן לבחור צבעי טפסים/סקולים */
 :root[data-theme="light"] { color-scheme: light; }
 :root[data-theme="dark"] { color-scheme: dark; }
 
-/* אם יש לך כלל ל-btn הקטן בלייט, תשכפל גם לו: */
-:root[data-theme="light"] .btn.small,
-html[data-theme="light"] .btn.small{
-background: rgba(0,0,0,.1);
-}
 *{box-sizing:border-box}
 html,body{height:100%}
-html,body{
-margin:0;
-padding:0;
-overflow-x:hidden; /* מונע גלילה אופקית ופסים מוזרים */
-}
+html,body{margin:0;padding:0;overflow-x:hidden}
 
 /* ===== Base ===== */
 body{
 color:var(--text);
 font:16px/1.6 ui-sans-serif,-apple-system,Segoe UI,Roboto,Arial;
-/* iOS safe area: לא לתת לתוכן "להיכנס" מתחת ל-notch */
-padding-top: env(safe-area-inset-top);
-padding-left: env(safe-area-inset-left);
-padding-right: env(safe-area-inset-right);
-padding-bottom: env(safe-area-inset-bottom);
-
-/* רקע "אורורה" ללא background-attachment: fixed (בעייתי ב-iOS) */
+padding: env(safe-area-inset-top) env(safe-area-inset-right) env(safe-area-inset-bottom) env(safe-area-inset-left);
 background:
 radial-gradient(1200px 600px at 8% -10%, rgba(77,70,206,.55) 0%, transparent 60%),
 radial-gradient(900px 460px at 92% 0%, rgba(6,182,212,.55) 0%, transparent 58%),
 radial-gradient(1000px 520px at 50% 110%, rgba(244,114,182,.45) 0%, transparent 60%),
 linear-gradient(135deg,var(--bg1),var(--bg2));
-background-repeat:no-repeat;
-background-size:cover;
+background-repeat:no-repeat; background-size:cover;
 animation:bgHue 22s ease-in-out infinite alternate;
 }
 
-/* Animated hue/sat shift (עדין) */
 @keyframes bgHue{
 0% { filter:hue-rotate(0deg) saturate(105%) }
 100%{ filter:hue-rotate(18deg) saturate(118%) }
 }
 
-/* Decorative orbs — במקום fixed (גורם “פסים” ב-iOS), נשתמש ב-absolute בתוך עטיפה */
+/* Decorative orbs (iOS-safe) */
 .orbs{ position:fixed; inset:0; pointer-events:none; z-index:-1; overflow:hidden; }
-.orbs::before, .orbs::after{
-content:"";
-position:absolute;
-width:55vmin; height:55vmin; border-radius:50%;
-filter:blur(42px);
-mix-blend-mode:screen; opacity:.65;
+.orbs::before,.orbs::after{
+content:""; position:absolute; width:55vmin; height:55vmin; border-radius:50%;
+filter:blur(42px); mix-blend-mode:screen; opacity:.65;
 }
 .orbs::before{ left:-12vmin; top:-8vmin;
 background:radial-gradient(circle at 30% 30%, rgba(139,92,246,.45), transparent 60%);
@@ -91,24 +59,21 @@ background:radial-gradient(circle at 70% 70%, rgba(6,182,212,.40), transparent 6
 }
 
 /* ---------- Layout ---------- */
-.wrap{ width:min(1180px,92vw); margin:0 auto; padding:84px 0 56px; }
+.container{ width:min(1180px,92vw); margin:0 auto; }
+.wrap{ padding:96px 0 56px; }
 .hero{ text-align:center; margin: 18px 0 28px; }
-
 h1{
-margin:0 0 10px;
-font-size: clamp(36px, 5.6vw, 60px);
-letter-spacing:.3px;
-line-height:1.1;
-color:var(--text);
+margin:0 0 12px;
+font-size: clamp(38px, 5.8vw, 64px);
+letter-spacing:.3px; line-height:1.1; color:var(--text);
 text-shadow: 0 10px 40px rgba(0,0,0,.35);
 }
 .subtitle{
-margin:0 auto;
-color:var(--muted);
-font-size: clamp(14px, 2.2vw, 18px);
+margin:0 auto; color:var(--muted);
+font-size: clamp(15px, 2.2vw, 18px);
 }
 
-/* gradient רק על המילה הממותגת */
+/* Branded gradient only on highlighted word */
 .brand{
 background:linear-gradient(90deg,#fff, #a5b4fc 45%, #67e8f9 75%, #a7f3d0 100%);
 -webkit-background-clip:text; background-clip:text; color:transparent;
@@ -121,35 +86,27 @@ display:grid; gap:22px;
 grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
 }
 .card{
-position:relative;
-border-radius:var(--radius);
+position:relative; border-radius:var(--radius);
 background:linear-gradient(180deg, rgba(255,255,255,.10), rgba(255,255,255,.06));
 border:1px solid var(--border);
-/* backdrop-filter בעייתי במובייל → נרכך, ונכבה ספציפית ב-iOS בהמשך */
-backdrop-filter: blur(9px);
--webkit-backdrop-filter: blur(9px);
+backdrop-filter: blur(9px); -webkit-backdrop-filter: blur(9px);
 box-shadow: var(--shadow);
-padding:22px 22px 20px;
-transform: translateZ(0);
+padding:22px 22px 20px; transform: translateZ(0);
 transition: transform .35s cubic-bezier(.2,.6,.2,1), box-shadow .35s ease;
 }
-.card:hover{
-transform: translateY(-6px) scale(1.01);
-box-shadow: 0 35px 80px rgba(0,0,0,.45), 0 12px 26px rgba(0,0,0,.30);
-}
+.card:hover{ transform: translateY(-6px) scale(1.01); box-shadow: 0 35px 80px rgba(0,0,0,.45), 0 12px 26px rgba(0,0,0,.30); }
 .card h3{ margin:0 0 10px; font-size:18px; letter-spacing:.2px; }
 .card p, .card li{ color:#dbe2ef; }
 .card .muted{ color:var(--muted) }
 
-/* list reset */
-ul{margin:10px 0 0 18px; padding:0}
-li{margin:6px 0}
+ul{margin:10px 0 0 18px; padding:0} li{margin:6px 0}
 
-/* metric rows */
+/* Key/Value list (status) */
 .kv{ display:flex; align-items:center; gap:8px; margin:6px 0 }
 .kv b{ color:#eaf2ff }
+.kv b, .kv span{ white-space:nowrap }
 
-/* status pill */
+/* Fancy status pill */
 .pill{
 display:inline-flex; align-items:center; gap:8px;
 padding:8px 12px; border-radius:999px; margin-top:10px;
@@ -161,540 +118,125 @@ color:#f1e8ff; font-weight:600;
 /* ---------- Buttons ---------- */
 .actions{ margin-top:14px; display:flex; flex-wrap:wrap; gap:10px }
 .btn{
---ring: rgba(103,232,249,.55);
 display:inline-flex; align-items:center; gap:10px;
-padding:12px 16px; border-radius:12px;
-font-weight:700; letter-spacing:.2px; text-decoration:none; color:#fff;
-border:1px solid var(--border);
-background:rgba(28,34,56,.66);
-box-shadow: 0 6px 18px rgba(0,0,0,.30);
+padding:12px 16px; border-radius:12px; font-weight:700; letter-spacing:.2px;
+text-decoration:none; color:#fff; border:1px solid var(--border);
+background:rgba(28,34,56,.66); box-shadow: 0 6px 18px rgba(0,0,0,.30);
 text-shadow: 0 1px 2px rgba(0,0,0,.35);
 transition: transform .2s ease, border-color .2s ease, box-shadow .2s ease, background .2s ease;
 }
-.btn:hover{
-transform: translateY(-2px);
-border-color: rgba(255,255,255,.35);
-box-shadow: 0 12px 32px var(--ring);
-}
-.btn.primary{
-background: linear-gradient(90deg, var(--acc1) 0%, var(--acc2) 45%, var(--acc3) 75%, var(--acc4) 100%);
-border-color: transparent;
-}
+.btn:hover{ transform: translateY(-2px); border-color: rgba(255,255,255,.35); box-shadow: 0 12px 32px var(--ring); }
+.btn:focus-visible{ outline:3px solid var(--ring-strong); outline-offset:2px; }
+.btn.primary{ background: linear-gradient(90deg, var(--acc1) 0%, var(--acc2) 45%, var(--acc3) 75%, var(--acc4) 100%); border-color: transparent; }
 .btn.ghost{ background: transparent; }
 
-/* tiny badge row */
 .badges{ margin-top:8px; display:flex; flex-wrap:wrap; gap:8px }
 .badges img{ height:20px; opacity:.95; filter:drop-shadow(0 2px 8px rgba(0,0,0,.35))}
 
 /* ---------- Footer ---------- */
-footer{
-margin:34px 0 0;
-color:var(--muted);
-text-align:center;
-font-size:13px; opacity:.9;
-}
+footer{ margin:34px 0 0; color:var(--muted); text-align:center; font-size:13px; opacity:.9; }
 
 /* ---------- Rocket ---------- */
 .logo-hero{
-font-size: clamp(56px, 8.4vw, 96px);
+font-size: clamp(56px, 8vw, 92px);
 filter: drop-shadow(0 12px 28px rgba(0,0,0,.45));
-position: relative; display:inline-block;
-transform-origin:50% 80%;
+position: relative; display:inline-block; transform-origin:50% 80%;
 animation: bob 3.2s ease-in-out infinite;
 }
-.logo-hero::after{ /* flame */
-content:"";
-position:absolute; left:-14px; top:62%;
-width:14px; height:14px; border-radius:50%;
+.logo-hero::after{
+content:""; position:absolute; left:-14px; top:62%; width:14px; height:14px; border-radius:50%;
 background: radial-gradient(circle at 30% 30%, #ffd166 0%, #fb923c 55%, transparent 70%);
-filter: blur(1.6px) brightness(1.1);
-animation: thrust .6s ease-in-out infinite;
+filter: blur(1.6px) brightness(1.1); animation: thrust .6s ease-in-out infinite;
 }
 @keyframes bob{ 0%,100%{ transform: translateY(0) rotate(-2deg) } 50%{ transform: translateY(-6px) rotate(2deg) } }
 @keyframes thrust{ 0%,100%{ transform: translateX(-3px) scale(.85); opacity:.65 } 50%{ transform: translateX(-7px) scale(1.15); opacity:1 } }
 
-/* ---------- Mode toggle button (optional) ---------- */
-#modeBtn{
-position:fixed; right:16px; top:calc(16px + env(safe-area-inset-top));
-border:1px solid var(--border);
-background:linear-gradient(180deg, rgba(255,255,255,.10), rgba(255,255,255,.06));
-color:var(--text); padding:8px 12px; border-radius:12px;
-cursor:pointer; box-shadow: var(--shadow); z-index:20;
-}
-#modeBtn:hover{ transform: translateY(-1px); }
-
-/* ---------- Small screens ---------- */
-@media (max-width:600px){
-.wrap{ padding:68px 0 46px }
-.actions{ justify-content:center }
-.btn{ width:100%; justify-content:center; padding:14px; font-size:16px }
-}
-
-/* ===== iOS specific hardening ===== */
-@supports (-webkit-touch-callout: none) {
-/* iOS: לרכך glass על כרטיסים בלבד */
-.card{
-backdrop-filter:none; -webkit-backdrop-filter:none;
-background:rgba(255,255,255,.08);
-}
-}
-
-/* ===== Topbar — glassy, sticky, professional (בכל הדפדפנים) ===== */
-.topbar{
-position: sticky; top: 0; z-index: 60;
-background: linear-gradient(180deg, rgba(10,16,30,.75), rgba(10,16,30,.35));
-backdrop-filter: blur(10px);
--webkit-backdrop-filter: blur(10px);
-border-bottom: 1px solid var(--border);
-box-shadow: 0 10px 30px rgba(0,0,0,.25);
-}
-.topbar .container{
-display:flex; align-items:center; justify-content:space-between;
-gap:18px; padding:14px 0;
-}
-.brand{ display:flex; align-items:center; gap:10px; text-decoration:none; }
-.brand .logo{
-width:34px; height:34px; border-radius:10px;
-display:grid; place-items:center; font-weight:900;
-background: linear-gradient(135deg, var(--acc1), var(--acc2));
-box-shadow: 0 6px 16px rgba(0,0,0,.35);
-}
-.brand .brand-name{ font-weight:800; letter-spacing:.2px; }
-.nav{ display:flex; align-items:center; gap:14px; flex-wrap:wrap; }
-.nav a{
-color: var(--muted); text-decoration:none; font-weight:600; padding:8px 10px; border-radius:10px;
-}
-.nav a:hover{ color: var(--text); background: rgba(255,255,255,.06); }
-
-/* ===== Big Theme Toggle (מתאים ל-#themeToggle שקיים ב-HTML) ===== */
-#themeToggle{
-display:inline-flex; align-items:center; justify-content:center;
-min-width:44px; min-height:44px;
-padding:0 14px; border-radius:12px; border:1px solid var(--border);
-font-weight:800; font-size:18px; line-height:1;
-background: linear-gradient(180deg, rgba(255,255,255,.10), rgba(255,255,255,.05));
-color:#fff;
-box-shadow: 0 8px 22px rgba(0,0,0,.28);
-transition: transform .2s ease, box-shadow .2s ease, border-color .2s ease;
-}
-#themeToggle:hover{
-transform: translateY(-2px);
-box-shadow: 0 14px 30px rgba(0,0,0,.35);
-border-color: rgba(255,255,255,.28);
-}
-/* במצב לייט – רק קצת ניגודיות שונה לכפתור */
-:root[data-theme="light"] #themeToggle,
-body.light #themeToggle{
-background: rgba(0,0,0,.06);
-color: #0b0f19;
-}
-
-/* התאמות מובייל לטופבר ולכפתור */
-@media (max-width:600px){
-.topbar .container{ padding:10px 0; }
-.nav{ gap:10px; }
-#themeToggle{ min-height:42px; padding:0 12px; font-size:17px; }
-}
-
-/* קובע מרווח תחת הטופבר הסטיקי כדי שלא יכסה את ההירו */
-.wrap{ padding-top: 96px; }
-/* ===== Topbar — glassy, sticky, professional (override) ===== */
+/* ---------- Topbar (sticky, glassy) ---------- */
 .topbar{
 position: sticky; top:0; z-index:60;
 background: linear-gradient(180deg, rgba(10,16,30,.78), rgba(10,16,30,.35));
-backdrop-filter: blur(10px);
--webkit-backdrop-filter: blur(10px);
-border-bottom: 1px solid var(--border);
-box-shadow: 0 10px 30px rgba(0,0,0,.25);
+backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px);
+border-bottom: 1px solid var(--border); box-shadow: 0 10px 30px rgba(0,0,0,.25);
 }
 .topbar .container{
-display:flex; align-items:center; justify-content:space-between;
-gap:18px; padding:14px 0;
+width:min(1180px,92vw); margin:0 auto;
+padding:12px 0; display:flex; align-items:center; justify-content:space-between; gap:16px; min-height:56px;
 }
-
-/* מותג */
-.brand{ display:flex; align-items:center; gap:10px; text-decoration:none; }
+.brand{ display:flex; align-items:center; gap:10px; text-decoration:none; flex:0 0 auto; min-width:fit-content }
 .brand .logo{
-width:34px; height:34px; border-radius:10px;
-display:grid; place-items:center; font-weight:900;
-background: linear-gradient(135deg, var(--acc1), var(--acc2));
-color:#fff;
-box-shadow: 0 6px 16px rgba(0,0,0,.35);
+width:34px; height:34px; border-radius:10px; display:grid; place-items:center; font-weight:900;
+color:#fff; background: linear-gradient(135deg, var(--acc1), var(--acc2)); box-shadow: 0 6px 16px rgba(0,0,0,.35);
 }
-.brand .brand-name{ font-weight:800; letter-spacing:.2px; }
-
-/* ניווט */
-.nav{ display:flex; align-items:center; gap:14px; flex-wrap:wrap; }
-.nav a{
-color: var(--muted); text-decoration:none; font-weight:600;
-padding:8px 10px; border-radius:10px;
-}
+.brand .brand-name{ font-weight:800; letter-spacing:.2px; white-space:nowrap; }
+.nav{ display:flex; align-items:center; gap:18px; flex-wrap:wrap; margin-left:auto; }
+.nav a{ color: var(--muted); text-decoration:none; font-weight:600; padding:8px 10px; border-radius:10px; }
 .nav a:hover{ color: var(--text); background: rgba(255,255,255,.06); }
+.nav a:focus-visible{ outline:2px solid var(--ring); outline-offset:2px; }
 
-/* כפתור אור/חושך – גדול ופרימיום */
-.topbar .btn.small{
-display:inline-flex; align-items:center; justify-content:center;
-height:44px; min-width:44px; padding:0 14px;
-border-radius:12px; border:1px solid var(--border);
-background: linear-gradient(180deg, rgba(255,255,255,.10), rgba(255,255,255,.05));
-color:#fff; font-weight:800; letter-spacing:.2px;
-box-shadow: 0 8px 22px rgba(0,0,0,.28);
-transition: transform .15s ease, box-shadow .15s ease, border-color .2s ease;
-}
-.topbar .btn.small:hover{
-transform: translateY(-2px);
-border-color: rgba(255,255,255,.28);
-box-shadow: 0 14px 30px rgba(0,0,0,.35);
-}
-
-/* התאמות מובייל */
-@media (max-width:600px){
-.topbar .container{ padding:10px 0; }
-.nav{ gap:10px; }
-.topbar .btn.small{ height:42px; padding:0 12px; }
-}
-
-/* מרווח תוכן בגלל הטופבר הסטיקי */
-.wrap{ padding-top:96px; }
-/* ===== Big center theme toggle ===== */
-.theme-row{
-margin:18px 0 8px;
-display:flex; justify-content:center;
-}
-
+/* ---------- Big center theme toggle (hero) ---------- */
+.theme-row{ margin:18px 0 8px; display:flex; justify-content:center; }
 .theme-toggle{
---bd: rgba(255,255,255,.18);
---glow: rgba(103,232,249,.35);
+--bd: rgba(255,255,255,.18); --glow: rgba(103,232,249,.35);
 display:inline-flex; align-items:center; gap:10px;
-padding:12px 18px; border-radius:14px;
-border:1px solid var(--bd);
+padding:12px 18px; border-radius:14px; border:1px solid var(--bd);
 background:linear-gradient(180deg, rgba(255,255,255,.12), rgba(255,255,255,.06));
 color:#fff; font-weight:800; letter-spacing:.2px;
 box-shadow: 0 10px 26px rgba(0,0,0,.28), 0 0 0 0 var(--glow);
-transform: translateZ(0);
 transition: box-shadow .25s ease, transform .2s ease, border-color .2s ease;
 }
 .theme-toggle .icon{ font-size:20px; line-height:1 }
 .theme-toggle .label{ font-size:14px; opacity:.95 }
+.theme-toggle:hover{ transform: translateY(-2px); border-color: rgba(255,255,255,.28); box-shadow: 0 16px 36px rgba(0,0,0,.35), 0 0 0 6px var(--glow); }
+:root[data-theme="light"] .theme-toggle, body.light .theme-toggle{ background:linear-gradient(180deg, rgba(0,0,0,.06), rgba(0,0,0,.03)); color:var(--text); }
 
-.theme-toggle:hover{
-transform: translateY(-2px);
-border-color: rgba(255,255,255,.28);
-box-shadow: 0 16px 36px rgba(0,0,0,.35), 0 0 0 6px var(--glow);
-}
-/* מצב Light – ניטרלי ונקי */
-:root[data-theme="light"] .theme-toggle,
-body.light .theme-toggle{
-background:linear-gradient(180deg, rgba(0,0,0,.06), rgba(0,0,0,.03));
-color:var(--text);
-}
-/* ===== Fix 1: Topbar alignment & centering ===== */
-.topbar .container{
-width:min(1180px,92vw);
-margin:0 auto; /* מרכז את הבר כמו התוכן */
-padding:12px 0;
-display:flex;
-align-items:center;
-justify-content:space-between; /* כותרת ישרה ופיזור נכון */
-gap:16px;
-}
+/* ---------- Perfect centered hero (desktop + mobile) ---------- */
+.hero{ display:flex; flex-direction:column; align-items:center; justify-content:center; padding:60px 0 80px; }
+.hero .container{ max-width:1080px; margin:0 auto; }
+.hero-inner{ display:flex; flex-direction:column; align-items:center; text-align:center; }
+.hero-inner .logo-hero{ margin:0 auto 14px; }
+.hero h1{ margin:0 0 14px; line-height:1.1; text-align:center; }
+.hero .subtitle{ max-width:720px; }
 
-/* קונטיינר כללי לשימוש בחלקים נוספים (Hero וכו') */
-.container{ width:min(1180px,92vw); margin:0 auto; }
-
-/* ===== Fix 2: Uptime wraps nicely on mobile ===== */
-.kv{ display:flex; flex-wrap:wrap; gap:8px 12px; }
-.kv li{ display:flex; align-items:center; gap:8px; }
-.kv b{ white-space:nowrap; }
-.kv span{ max-width:60vw; overflow-wrap:anywhere; word-break:break-word; }
-
-/* כרטיס ה-Status – מניעת גלישה לרוחב */
-.features .card ul{ padding-left:0; list-style: none; }
-
-/* התאמות מסך קטן */
-@media (max-width: 480px){
-.kv{ display:grid; grid-template-columns:auto 1fr; gap:6px 10px; }
-.kv li{ display:contents; } /* מיישר את הזוגות כותרת/ערך לשתי עמודות */
-.kv span{ max-width:100%; } /* מרשה שבירה מלאה בתוך המסגרת */
-.hero .subtitle{ line-height:1.4; } /* קצת צפוף יותר כדי למנוע דחיפות למטה */
-/* ===== Fix 3: Center main hero title perfectly ===== */
-.hero {
-text-align: center;
-display: flex;
-flex-direction: column;
-align-items: center;
-justify-content: center;
-padding: 40px 0 60px;
-}
-
-.hero-inner {
-display: flex;
-flex-direction: column;
-align-items: center;
-justify-content: center;
-text-align: center;
-}
-
-.hero h1 {
-margin: 10px 0 12px;
-font-size: clamp(36px, 5.5vw, 58px);
-line-height: 1.1;
-text-align: center;
-}
-
-.hero .subtitle {
-max-width: 600px;
-margin: 0 auto;
-text-align: center;
-line-height: 1.5;
-}
-
-/* נוודא שגם במובייל זה יישאר ממורכז */
-@media (max-width: 600px) {
-.hero {
-padding: 32px 0 48px;
-}
-.hero h1 {
-font-size: clamp(28px, 6vw, 44px);
-}
-.hero .subtitle {
-max-width: 90%;
-}
-}
-/* === Fix hero perfect centering (desktop & mobile) === */
-.hero .container{
-max-width: 980px; /* מגביל רוחב כדי למרכז יפה */
-margin: 0 auto;
-}
-.hero-inner{
-display: flex;
-flex-direction: column;
-align-items: center; /* מרכז אופקי */
-text-align: center; /* מרכז טקסט */
-}
-.hero-inner .logo-hero{
-margin: 0 auto 10px; /* הרוקט יישב בדיוק באמצע */
-}
-.hero h1{
-margin: 0 0 8px;
-line-height: 1.1;
-text-align: center;
-}
-
-/* === Polish topbar on mobile (no drift/overflow) === */
-.topbar .container{
-max-width: 1200px; /* יישור ואחידות דסקטופ */
-margin: 0 auto;
-padding-inline: 16px;
-display: flex;
-align-items: center;
-justify-content: space-between;
-gap: 16px;
-min-height: 56px;
-}
-.brand, .nav{ min-width: 0; } /* מונע “דחיפות” כשהרוחב קטן */
-.nav{ gap: 18px; }
-
-/* מובייל: טיפה מקטינים רווחים כדי שלא יתפזר למעלה */
-@media (max-width: 600px){
-.topbar .container{ padding-inline: 12px; gap: 12px; }
-.nav{ gap: 12px; }
-.nav a{ padding: 6px 8px; font-size: 14px; }
-}
-
-/* === Safety: שורות סטטוס לא ישברו/יזרקו אל מחוץ לכרטיס במובייל === */
-.kv{ flex-wrap: wrap; } /* אם צריך, יורד שורה בצורה מסודרת */
-.kv span, .kv b{ white-space: nowrap; }
-/* === HERO perfect centering (desktop + mobile) === */
-.topbar .container{
-width:min(1180px,92vw);
-margin:0 auto;
-padding-inline:16px;
-display:flex; align-items:center; justify-content:space-between; gap:16px;
-min-height:56px;
-}
-
-.hero .container{
-max-width:980px; /* מגביל רוחב כדי למרכז יפה */
-margin:0 auto;
-}
-.hero-inner{
-display:flex; flex-direction:column;
-align-items:center; text-align:center; /* מרכז טקסט ואובייקטים */
-}
-.hero-inner .logo-hero{
-margin:0 auto 12px; /* הרקטה בדיוק באמצע */
-}
-.hero h1{
-margin:6px 0 12px;
-line-height:1.1; text-align:center;
-}
-
-/* מובייל: משמר טופ־בר נקי ולא “בורח” לאמצע */
+/* ---------- Mobile polish ---------- */
 @media (max-width:600px){
-.topbar .container{ padding-inline:12px; gap:12px; }
-.nav{ gap:12px; }
-.nav a{ padding:6px 8px; font-size:14px; }
-.hero{ padding:32px 0 48px; }
-.hero h1{ font-size: clamp(28px, 6vw, 44px); }
-.hero .subtitle{ max-width:90%; }
-}
-  /* === Mobile topbar: push nav right & place "View source" at far right === */
-@media (max-width: 600px){
-.topbar .container{
-padding-left: calc(env(safe-area-inset-left) + 14px);
-padding-right: calc(env(safe-area-inset-right) + 14px);
-gap: 12px;
-}
+.topbar .container{ padding-inline:16px; gap:12px; }
+.nav{ gap:12px; } .nav a{ padding:6px 8px; font-size:14px; }
 
-/* השם AutoRoy לא נחתך */
-.brand{ flex:0 0 auto; min-width:fit-content; overflow:visible; }
-.brand .brand-name{ white-space:nowrap; }
+/* push nav right & keep brand visible */
+.brand{ min-width:120px; }
+.nav .pill{ margin-left:auto; }
 
-/* כל הניווט נדחף ימינה */
-.nav{ flex:1; display:flex; align-items:center; gap:12px; margin-left:auto; }
-
-/* סדר עדיפויות בתוך הניווט:
-1) Features / How it works | 2) ... רווח גמיש ... | 3) View source | 4) ☾/☀ */
-.nav a:not(.pill){ order:1; } /* הלינקים השמאליים */
-.nav .pill{ order:3; margin-left:auto; }/* "View source" נדחף לקצה הימני */
-#themeToggle{ order:4; margin-left:8px; }
-
-/* קצת מיקורטור לתצוגה צפופה */
-.nav a{ font-size:15px; padding:6px 8px; }
-.btn.pill{ padding:8px 10px; font-size:14px; }
-}
-/* === Restore perfect centered hero title (like best version) === */
-.hero {
-text-align: center;
-display: flex;
-flex-direction: column;
-align-items: center;
-justify-content: center;
-padding: 60px 0 80px;
-}
-
-.hero-inner {
-display: flex;
-flex-direction: column;
-align-items: center;
-justify-content: center;
-text-align: center;
-}
-
-.hero .logo-hero {
-font-size: clamp(56px, 8vw, 92px);
-margin-bottom: 14px;
-}
-
-.hero h1 {
-margin: 0 0 14px;
-font-size: clamp(38px, 5.8vw, 64px);
-line-height: 1.1;
-text-align: center;
-}
-
-.hero .subtitle {
-max-width: 640px;
-margin: 0 auto;
-text-align: center;
-color: var(--muted);
-font-size: clamp(15px, 2.2vw, 18px);
-}
-
-/* --- Mobile tweak (slightly smaller) --- */
-@media (max-width: 600px){
-.hero {
-padding: 48px 0 64px;
-}
-.hero .logo-hero {
-font-size: clamp(48px, 10vw, 80px);
-}
-.hero h1 {
-font-size: clamp(28px, 6vw, 44px);
-}
-}
-  /* === Mobile cards spacing & wrap fix (no UI changes elsewhere) === */
-@media (max-width: 600px){
-/* רווח אנכי גדול יותר בין כרטיסים */
+.wrap{ padding-top:88px; }
 .grid{ gap:18px; }
+.card{ padding:18px 16px 16px; margin:0; overflow:hidden; }
+.kv{ display:grid; grid-template-columns:auto 1fr; gap:8px 10px; }
+.kv li{ display:contents; }
+.kv b{ white-space:nowrap; }
+.kv span{ max-width:100%; overflow-wrap:anywhere; word-break:break-word; }
 
-/* מרווח פנימי קצת קטן יותר למניעת "דחיפה" ושבירה נעימה */
-.card{
-padding:18px 16px 16px;
-margin:0; /* אין מרווח כפול: הגריד שולט */
-overflow:hidden; /* מונע “זליגה” של תוכן/צל על הבא בתור */
+.hero{ padding:48px 0 64px; }
+.logo-hero{ font-size: clamp(48px, 10vw, 80px); }
+h1{ font-size: clamp(28px, 6vw, 44px); }
+.subtitle{ max-width:90%; }
 }
 
-/* ה-KV של ה-Status: שתי עמודות – תווית + ערך, שובר שורה יפה */
-.kv{
-display:grid;
-grid-template-columns:auto 1fr;
-gap:8px 10px;
-}
-.kv li{ display:contents; } /* כל זוג (תווית/ערך) תופס שורה */
-.kv b{ white-space:nowrap; } /* "Status:" "Version:" לא נשברים */
-.kv span{
-max-width:100%;
-overflow-wrap:anywhere;
-word-break:break-word;
+/* ---------- iOS specific hardening ---------- */
+@supports (-webkit-touch-callout: none) {
+.card{ backdrop-filter:none; -webkit-backdrop-filter:none; background:rgba(255,255,255,.08); }
 }
 
-/* קצת מהדקים את הכרטיס הראשון כדי שלא ייגע באחריו בצל */
-.features .card{ box-shadow: var(--shadow); }
-}
-
-/* בטאבלט/דסקטופ – שמירה על יישור נקי בלי השפעה על המובייל */
-@media (min-width: 601px){
-.hero .container{ max-width:980px; margin:0 auto; }
-}
-/* === PATCH 2025-11-11 — hero + mobile spacing + topbar mobile === */
-
-/* 1) Hero: יישור מדויק בדסקטופ */
-.hero .container{max-width:1080px;margin:0 auto;}
-.hero-inner{display:flex;flex-direction:column;align-items:center;text-align:center;}
-.hero-inner .logo-hero{margin:0 auto 14px;}
-.hero h1{margin:8px 0 12px;line-height:1.08;text-align:center;}
-.hero .subtitle{max-width:720px;margin:0 auto;}
-
-/* 2) ריווח בין סקשנים/כרטיסים במובייל – שלא יעלה אחד על השני */
-.features{padding:6px 0;overflow:visible;}
-.features .grid{gap:22px;} /* ברירת מחדל */
-.features + .features{margin-top:18px;} /* רווח בין שני סקשנים עוקבים */
-
-@media (max-width:560px){
-.features .grid{gap:18px;} /* ריווח נעים יותר במסכים צרים */
-.card{margin:0;} /* מונע חפיפות שוליים חריגות */
-.kv{flex-wrap:wrap;gap:8px 12px;} /* Status rows נשברות יפה */
-.kv b{white-space:nowrap;}
-.kv span{max-width:100%;overflow-wrap:anywhere;word-break:break-word;}
-}
-
-/* 3) טופ־בר במובייל: קיבוע ימין ושמירה שה-AutoRoy לא ייחתך */
-@media (max-width:600px){
-.topbar .container{
-padding-inline:16px;
-gap:12px;
-}
-.brand{min-width:120px;flex:0 0 auto;} /* שם המותג תמיד נראה */
-.nav{margin-left:auto;gap:12px;}
-.nav a{padding:6px 8px;font-size:14px;}
-}
-/* === Glow indicator for "Online" status === */
-#status.ok::before {
-content: "";
-display: inline-block;
-width: 10px;
-height: 10px;
-border-radius: 50%;
-margin-right: 8px;
+/* ---------- Status online glow ---------- */
+#status.ok::before{
+content:""; display:inline-block; width:10px; height:10px; border-radius:50%; margin-right:8px;
 background: radial-gradient(circle at 30% 30%, #22c55e 0%, #16a34a 50%, transparent 80%);
-box-shadow: 0 0 8px 3px rgba(34,197,94,0.6);
-vertical-align: middle;
-animation: pulseGlow 1.5s ease-in-out infinite;
+box-shadow: 0 0 8px 3px rgba(34,197,94,0.6); vertical-align: middle; animation:pulseGlow 1.5s ease-in-out infinite;
+}
+@keyframes pulseGlow{
+0%,100%{ transform:scale(1); opacity:.9; box-shadow:0 0 8px 3px rgba(34,197,94,.6) }
+50% { transform:scale(1.25); opacity:1; box-shadow:0 0 12px 5px rgba(34,197,94,.9) }
 }
 
-@keyframes pulseGlow {
-0%, 100% { transform: scale(1); opacity: 0.9; box-shadow: 0 0 8px 3px rgba(34,197,94,0.6); }
-50% { transform: scale(1.25); opacity: 1; box-shadow: 0 0 12px 5px rgba(34,197,94,0.9); }
+/* ---------- Reduced motion support ---------- */
+@media (prefers-reduced-motion: reduce){
+*{ animation:none !important; transition:none !important }
 }
