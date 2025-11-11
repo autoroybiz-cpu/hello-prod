@@ -564,3 +564,87 @@ gap: 12px;
 .nav a{ font-size:15px; padding:6px 8px; }
 .btn.pill{ padding:8px 10px; font-size:14px; }
 }
+/* === Restore perfect centered hero title (like best version) === */
+.hero {
+text-align: center;
+display: flex;
+flex-direction: column;
+align-items: center;
+justify-content: center;
+padding: 60px 0 80px;
+}
+
+.hero-inner {
+display: flex;
+flex-direction: column;
+align-items: center;
+justify-content: center;
+text-align: center;
+}
+
+.hero .logo-hero {
+font-size: clamp(56px, 8vw, 92px);
+margin-bottom: 14px;
+}
+
+.hero h1 {
+margin: 0 0 14px;
+font-size: clamp(38px, 5.8vw, 64px);
+line-height: 1.1;
+text-align: center;
+}
+
+.hero .subtitle {
+max-width: 640px;
+margin: 0 auto;
+text-align: center;
+color: var(--muted);
+font-size: clamp(15px, 2.2vw, 18px);
+}
+
+/* --- Mobile tweak (slightly smaller) --- */
+@media (max-width: 600px){
+.hero {
+padding: 48px 0 64px;
+}
+.hero .logo-hero {
+font-size: clamp(48px, 10vw, 80px);
+}
+.hero h1 {
+font-size: clamp(28px, 6vw, 44px);
+}
+}
+  /* === Mobile cards spacing & wrap fix (no UI changes elsewhere) === */
+@media (max-width: 600px){
+/* רווח אנכי גדול יותר בין כרטיסים */
+.grid{ gap:18px; }
+
+/* מרווח פנימי קצת קטן יותר למניעת "דחיפה" ושבירה נעימה */
+.card{
+padding:18px 16px 16px;
+margin:0; /* אין מרווח כפול: הגריד שולט */
+overflow:hidden; /* מונע “זליגה” של תוכן/צל על הבא בתור */
+}
+
+/* ה-KV של ה-Status: שתי עמודות – תווית + ערך, שובר שורה יפה */
+.kv{
+display:grid;
+grid-template-columns:auto 1fr;
+gap:8px 10px;
+}
+.kv li{ display:contents; } /* כל זוג (תווית/ערך) תופס שורה */
+.kv b{ white-space:nowrap; } /* "Status:" "Version:" לא נשברים */
+.kv span{
+max-width:100%;
+overflow-wrap:anywhere;
+word-break:break-word;
+}
+
+/* קצת מהדקים את הכרטיס הראשון כדי שלא ייגע באחריו בצל */
+.features .card{ box-shadow: var(--shadow); }
+}
+
+/* בטאבלט/דסקטופ – שמירה על יישור נקי בלי השפעה על המובייל */
+@media (min-width: 601px){
+.hero .container{ max-width:980px; margin:0 auto; }
+}
