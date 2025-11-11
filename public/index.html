@@ -1,5 +1,5 @@
 <!doctype html>
-<html lang="en" data-theme="dark">
+<html lang="en">
 <head>
 <meta charset="utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
@@ -10,35 +10,37 @@
 <meta property="og:title" content="AutoRoy — DevOps Demo">
 <meta property="og:description" content="Static site on Render CDN, Dockerized with Nginx, auto-deploy from GitHub.">
 
-<link rel="icon" href="/favicon.ico?v=3">
+<!-- שינוי שם קובץ כדי לשבור קאש חזק של פאביקון -->
+<link rel="icon" href="/favicon-autoroy.svg?v=5">
+
 <link rel="preconnect" href="https://fonts.googleapis.com" />
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;800&display=swap" rel="stylesheet" />
-<!-- cache-bust -->
+<!-- פיצוץ קאש ל-CSS -->
 <link rel="stylesheet" href="styles.css?v=aurora3" />
 </head>
 
 <body>
+<!-- ביטול שחזור גלילה של הדפדפן וגלילה לראש הדף בכל טעינה -->
+<script>
+if ('scrollRestoration' in history) history.scrollRestoration = 'manual';
+window.scrollTo(0,0);
+</script>
+
 <div class="orbs" aria-hidden="true"></div>
 
-<header class="topbar" role="banner">
+<header class="topbar reveal" role="banner">
 <div class="container">
-<a class="brand" href="#top" aria-label="AutoRoy home">
+<div class="brand" aria-label="AutoRoy brand">
 <div class="logo" aria-hidden="true">AR</div>
 <span class="brand-name">AutoRoy</span>
-</a>
+</div>
 
 <nav class="nav" role="navigation" aria-label="Primary">
 <a href="#features">Features</a>
 <a href="#flow">How it works</a>
-<a class="btn pill" target="_blank" rel="noopener"
-href="https://github.com/autoroybiz-cpu/devops-training">View source ↗</a>
-
-<!-- כפתור מצב בהיר/כהה – גדול, ברור, נגיש -->
-<button id="themeToggle" class="btn theme" type="button" aria-label="Toggle theme">
-<span class="icon" aria-hidden="true">☀</span>
-<span class="label">Theme</span>
-</button>
+<a class="pill" target="_blank" rel="noopener" href="https://github.com/autoroybiz-cpu/devops-training">View source ↗</a>
+<button id="themeToggle" class="btn small" type="button" aria-label="Toggle theme">🌙</button>
 </nav>
 </div>
 </header>
@@ -75,6 +77,7 @@ git push # Render auto-deploys
 </div>
 </section>
 
+<!-- Service Status -->
 <section class="features" aria-labelledby="status-title">
 <div class="container grid">
 <h2 id="status-title" class="sr-only" style="position:absolute;left:-9999px;">Service Status</h2>
@@ -159,27 +162,29 @@ Built by <b>AutoRoy</b> · DevOps &amp; Automations •
 </footer>
 
 <script>
-// --- Theme toggle: עובד רק עם html[data-theme] + שמירה על body.light לתאימות ---
+// ----- Theme toggle (עובד מול body.light) -----
 const themeBtn = document.getElementById('themeToggle');
-const htmlEl = document.documentElement;
 
-function setTheme(mode){
-htmlEl.setAttribute('data-theme', mode);
-document.body.classList.toggle('light', mode === 'light'); // תאימות ל-CSS ישן
-themeBtn.textContent = (mode === 'light') ? '🌙' : '☀';
+function applyTheme(mode){
+if(mode === 'light'){
+document.body.classList.add('light');
+themeBtn.textContent = '🌙';
+}else{
+document.body.classList.remove('light');
+themeBtn.textContent = '☀';
+}
 localStorage.setItem('theme', mode);
 }
 
-// מצב התחלתי
-setTheme(localStorage.getItem('theme') || htmlEl.getAttribute('data-theme') || 'dark');
+const savedTheme = localStorage.getItem('theme');
+applyTheme(savedTheme || (document.body.classList.contains('light') ? 'light' : 'dark'));
 
-// החלפה בלחיצה
 themeBtn.addEventListener('click', () => {
-const next = (htmlEl.getAttribute('data-theme') === 'light') ? 'dark' : 'light';
-setTheme(next);
+const next = document.body.classList.contains('light') ? 'dark' : 'light';
+applyTheme(next);
 });
 
-// Reveal-on-scroll (בלי שינוי)
+// ----- Reveal-on-scroll -----
 if (!window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
 const io = new IntersectionObserver(entries => {
 entries.forEach(e => e.isIntersecting && e.target.classList.add('in'));
@@ -188,9 +193,6 @@ document.querySelectorAll('.reveal').forEach(el => io.observe(el));
 } else {
 document.querySelectorAll('.reveal').forEach(el => el.classList.add('in'));
 }
-
-// אופציונלי: פתיחה תמיד למעלה אם הדפדפן “זוכר” גלילה
-if (!location.hash) window.scrollTo({ top: 0, behavior: 'auto' });
 </script>
 </body>
 </html>
