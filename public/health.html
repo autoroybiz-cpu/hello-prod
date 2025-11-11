@@ -1,0 +1,140 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover"/>
+<title>Service Health • AutoRoy</title>
+<link rel="stylesheet" href="/styles.css?v=aurora4"/>
+<style>
+/* --- Health page polish (scoped) --- */
+.health-wrap{ width:min(980px,92vw); margin:28px auto 40px; }
+.health-head{
+display:flex; align-items:center; justify-content:space-between; gap:14px; margin-bottom:14px;
+}
+.health-title{ font-size:28px; font-weight:800; letter-spacing:.2px; margin:0 }
+.health-actions{ display:flex; gap:10px; flex-wrap:wrap }
+.metric-grid{
+display:grid; gap:16px;
+grid-template-columns: repeat(auto-fit, minmax(240px,1fr));
+}
+.metric{
+border-radius: var(--radius);
+border:1px solid var(--border);
+background: linear-gradient(180deg, rgba(255,255,255,.10), rgba(255,255,255,.06));
+box-shadow: var(--shadow);
+padding:16px 18px;
+}
+.metric h4{ margin:0 0 6px; font-size:14px; color:#cdd6f4; letter-spacing:.3px }
+.metric .val{ font-size:22px; font-weight:800 }
+.good{ color:#86efac } .warn{ color:#fde68a } .bad{ color:#fca5a5 }
+.mono{ font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace }
+.copy{ cursor:pointer }
+.json-block{
+margin-top:18px; border-radius:14px; padding:14px 16px;
+background:rgba(0,0,0,.25); border:1px solid var(--border); overflow:auto;
+max-height:42vh; font-size:13px;
+}
+.pill.tiny{ padding:6px 10px; font-size:12px }
+</style>
+</head>
+<body>
+<div class="health-wrap">
+<div class="health-head">
+<h1 class="health-title">Service Health</h1>
+<div class="health-actions">
+<a class="pill tiny" href="/" aria-label="Back to home">← Back</a>
+<button id="refreshBtn" class="btn">↻ Refresh</button>
+</div>
+</div>
+
+<div id="badges" class="badges" aria-live="polite" aria-atomic="true"></div>
+
+<div class="metric-grid" style="margin-top:10px">
+<div class="metric"><h4>Status</h4><div id="mStatus" class="val">—</div></div>
+<div class="metric"><h4>Version</h4><div id="mVersion" class="val mono">—</div></div>
+<div class="metric"><h4>Build</h4><div id="mBuild" class="val mono copy" title="Click to copy">—</div></div>
+<div class="metric"><h4>Branch</h4><div id="mBranch" class="val mono">—</div></div>
+<div class="metric"><h4>Deployed</h4><div id="mDeployed" class="val">—</div></div>
+<div class="metric"><h4>Uptime</h4><div id="mUptime" class="val">—</div></div>
+</div>
+
+<div class="json-block mono" id="jsonRaw" aria-label="Raw JSON"></div>
+<p class="muted" style="margin-top:8px">
+Live endpoint: <a href="/healthz" target="_blank" rel="noopener">/healthz</a>
+</p>
+</div>
+
+<script>
+const els = {
+status: document.getElementById('mStatus'),
+version: document.getElementById('mVersion'),
+build: document.getElementById('mBuild'),
+branch: document.getElementById('mBranch'),
+deployed:document.getElementById('mDeployed'),
+uptime: document.getElementById('mUptime'),
+badges: document.getElementById('badges'),
+raw: document.getElementById('jsonRaw'),
+refresh: document.getElementById('refreshBtn'),
+};
+
+function fmtUptime(sec){
+const d = Math.floor(sec/86400);
+const h = Math.floor((sec%86400)/3600);
+const m = Math.floor((sec%3600)/60);
+const s = Math.floor(sec%60);
+return [d?d+'d':null,h?h+'h':null,m?m+'m':null,(d||h||m)?null:s+'s'].filter(Boolean).join(' ');
+}
+
+function countTo(el, target, ms=900){
+const start = 0, step = 16;
+const ticks = Math.max(1, Math.floor(ms/step));
+let i = 0;
+const timer = setInterval(()=>{
+i++;
+const val = Math.round((start + (target-start)*(i/ticks)));
+el.textContent = fmtUptime ? fmtUptime(val) : val;
+if(i>=ticks) clearInterval(timer);
+}, step);
+}
+
+async function load(){
+els.status.textContent = 'Loading…';
+const r = await fetch('/healthz', {cache:'no-store'});
+const d = await r.json();
+
+// Badges
+els.badges.innerHTML = '';
+const badge = (txt)=>{ const s=document.createElement('span'); s.className='pill'; s.textContent=txt; return s; };
+els.badges.append(badge('Branch: '+d.branch), badge('Build: '+d.build));
+
+// Values
+els.status.textContent = (d.status==='ok'?'Online':'Degraded');
+els.status.className = 'val ' + (d.status==='ok'?'good':'warn');
+els.version.textContent = d.version || '—';
+els.build.textContent = d.build || '—';
+els.branch.textContent = d.branch || '—';
+els.deployed.textContent= d.deployedAt ? new Date(d.deployedAt).toLocaleString() : '—';
+
+// Animated uptime count
+const sec = Number(d.uptimeSec||0);
+els.uptime.textContent = fmtUptime(sec);
+requestAnimationFrame(()=> countTo(els.uptime, sec, 900));
+
+// Raw JSON pretty
+els.raw.textContent = JSON.stringify(d, null, 2);
+}
+
+// Copy build on click
+els.build.addEventListener('click', async () => {
+try { await navigator.clipboard.writeText(els.build.textContent); els.build.classList.add('good');
+setTimeout(()=>els.build.classList.remove('good'), 700);
+} catch {}
+});
+
+els.refresh.addEventListener('click', load);
+load();
+// Auto refresh every 10s
+setInterval(load, 10000);
+</script>
+</body>
+</html>
