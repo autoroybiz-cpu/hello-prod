@@ -206,6 +206,85 @@ document.querySelectorAll('.reveal').forEach(el => io.observe(el));
 } else {
 document.querySelectorAll('.reveal').forEach(el => el.classList.add('in'));
 }
+  <script>
+// --- Fake counters in Service Status (count-up) ---
+(function(){
+const els = {
+status: document.getElementById('status'),
+version: document.getElementById('version'),
+build: document.getElementById('build'),
+deployed: document.getElementById('deployed'),
+uptime: document.getElementById('uptime')
+};
+
+// counter עם requestAnimationFrame
+function countTo(el, to, ms=1200, suffix=""){
+const t0 = performance.now();
+const fmt = n => Intl.NumberFormat().format(Math.floor(n)) + suffix;
+function frame(t){
+const p = Math.min(1, (t - t0) / ms);
+const eased = 1 - Math.pow(1 - p, 3); // easeOutCubic
+el.textContent = fmt(to * eased);
+if (p < 1) requestAnimationFrame(frame);
+}
+requestAnimationFrame(frame);
+}
+
+// "הקלדה" לטקסטים שאינם מספרים
+function typeTo(el, text, ms=600){
+if (!el) return;
+el.textContent = "";
+let i = 0, step = Math.max(1, Math.round(text.length / (ms/30)));
+(function tick(){
+i += step; el.textContent = text.slice(0, i);
+if (i < text.length) setTimeout(tick, 30);
+})();
+}
+
+function startDummy(){
+if (els.status){ els.status.textContent = "Online"; els.status.classList.add('ok'); }
+typeTo(els.version, "1.0.4");
+typeTo(els.build, "8f2a6c1");
+typeTo(els.deployed, new Date().toLocaleString());
+if (els.uptime) countTo(els.uptime, 12345, 1400, "s");
+}
+
+// נסה להביא נתונים אמיתיים בלי לחסום את האנימציה
+function tryReal(){
+try{
+const ctl = new AbortController();
+setTimeout(()=>ctl.abort(), 1500); // לא נתקע אם אין תגובה
+fetch('/healthz', {signal: ctl.signal})
+.then(r => r.ok ? r.json() : null)
+.then(d => {
+if (!d) return;
+if (els.version && d.version) els.version.textContent = d.version;
+if (els.build && d.build) els.build.textContent = d.build;
+if (els.deployed && d.deployedAt)
+els.deployed.textContent = new Date(d.deployedAt).toLocaleString();
+if (els.uptime && Number.isFinite(d.uptimeSec))
+countTo(els.uptime, d.uptimeSec, 900, "s");
+})
+.catch(()=>{ /* משאירים דמה */ });
+}catch(e){}
+}
+
+// מפעילים כשכרטיס ה-Status נכנס לוויופורט (פעם אחת)
+const statusCard = document.querySelector('article.card h3')
+?.closest('.card') || null;
+
+const kick = () => { startDummy(); tryReal(); };
+
+if (statusCard && 'IntersectionObserver' in window){
+const io = new IntersectionObserver((en)=>{
+if (en.some(e=>e.isIntersecting)){ kick(); io.disconnect(); }
+}, {threshold: 0.35});
+io.observe(statusCard);
+} else {
+kick(); // נפילה לאחור
+}
+})();
+</script>
 </script>
 </body>
 </html>
