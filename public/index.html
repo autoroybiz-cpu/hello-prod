@@ -207,82 +207,92 @@ document.querySelectorAll('.reveal').forEach(el => io.observe(el));
 document.querySelectorAll('.reveal').forEach(el => el.classList.add('in'));
 }
   <script>
-// --- Fake counters in Service Status (count-up) ---
-(function(){
+(() => {
+// ===== Theme toggle (פשוט, בלי .icon/.label) =====
+const htmlEl = document.documentElement;
+const btn = document.getElementById('themeToggle');
+
+function setTheme(mode) {
+const light = mode === 'light';
+document.body.classList.toggle('light', light);
+htmlEl.setAttribute('data-theme', light ? 'light' : 'dark');
+// האימוג'י על הכפתור עצמו
+if (btn) btn.textContent = light ? '🌙' : '☀';
+localStorage.setItem('theme', mode);
+}
+
+const saved = localStorage.getItem('theme');
+setTheme(saved || (document.body.classList.contains('light') ? 'light' : 'dark'));
+
+if (btn) {
+btn.addEventListener('click', () => {
+const next = document.body.classList.contains('light') ? 'dark' : 'light';
+setTheme(next);
+});
+}
+
+// ===== Reveal-on-scroll (נשאר כמו שהיה) =====
+if (!window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+const io = new IntersectionObserver((ents) => {
+ents.forEach(e => e.isIntersecting && e.target.classList.add('in'));
+}, { threshold: 0.08 });
+document.querySelectorAll('.reveal').forEach(el => io.observe(el));
+} else {
+document.querySelectorAll('.reveal').forEach(el => el.classList.add('in'));
+}
+
+// ===== Helpers לסטטוס =====
 const els = {
 status: document.getElementById('status'),
 version: document.getElementById('version'),
 build: document.getElementById('build'),
 deployed: document.getElementById('deployed'),
-uptime: document.getElementById('uptime')
+uptime: document.getElementById('uptime'),
 };
 
-// counter עם requestAnimationFrame
-function countTo(el, to, ms=1200, suffix=""){
-const t0 = performance.now();
-const fmt = n => Intl.NumberFormat().format(Math.floor(n)) + suffix;
-function frame(t){
-const p = Math.min(1, (t - t0) / ms);
-const eased = 1 - Math.pow(1 - p, 3); // easeOutCubic
-el.textContent = fmt(to * eased);
-if (p < 1) requestAnimationFrame(frame);
-}
-requestAnimationFrame(frame);
-}
-
-// "הקלדה" לטקסטים שאינם מספרים
-function typeTo(el, text, ms=600){
+function countTo(el, to, ms, suffix = '') {
 if (!el) return;
-el.textContent = "";
-let i = 0, step = Math.max(1, Math.round(text.length / (ms/30)));
-(function tick(){
-i += step; el.textContent = text.slice(0, i);
-if (i < text.length) setTimeout(tick, 30);
-})();
+const from = 0;
+const start = performance.now();
+const step = (t) => {
+const p = Math.min(1, (t - start) / ms);
+const val = Math.round(from + (to - from) * p);
+el.textContent = val.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',') + (suffix ? ' ' + suffix : '');
+if (p < 1) requestAnimationFrame(step);
+};
+requestAnimationFrame(step);
 }
 
-function startDummy(){
-if (els.status){ els.status.textContent = "Online"; els.status.classList.add('ok'); }
-typeTo(els.version, "1.0.4");
-typeTo(els.build, "8f2a6c1");
-typeTo(els.deployed, new Date().toLocaleString());
-if (els.uptime) countTo(els.uptime, 12345, 1400, "s");
+// דמה אנימציה נעימה בזמן טעינה
+function startDummy() {
+if (els.status) els.status.textContent = 'Loading...';
+if (els.version) els.version.textContent = '—';
+if (els.build) els.build.textContent = '—';
+if (els.deployed) els.deployed.textContent = '—';
+if (els.uptime) countTo(els.uptime, 900, 900, 's'); // “סופר” עד 900 שניות
 }
 
-// נסה להביא נתונים אמיתיים בלי לחסום את האנימציה
-function tryReal(){
-try{
+// נסה להביא נתונים אמיתיים; אם לא – השאר דמה
 const ctl = new AbortController();
-setTimeout(()=>ctl.abort(), 1500); // לא נתקע אם אין תגובה
-fetch('/healthz', {signal: ctl.signal})
+startDummy();
+setTimeout(() => ctl.abort(), 1500); // לא להיתקע יותר מדי
+
+fetch('/healthz', { signal: ctl.signal })
 .then(r => r.ok ? r.json() : null)
-.then(d => {
-if (!d) return;
-if (els.version && d.version) els.version.textContent = d.version;
-if (els.build && d.build) els.build.textContent = d.build;
-if (els.deployed && d.deployedAt)
-els.deployed.textContent = new Date(d.deployedAt).toLocaleString();
-if (els.uptime && Number.isFinite(d.uptimeSec))
-countTo(els.uptime, d.uptimeSec, 900, "s");
+.then((d) => {
+if (!d) return; // אם נכשל – נשאר עם הדמה
+if (els.status) els.status.textContent = 'Online';
+if (els.version) els.version.textContent = d.version || '—';
+if (els.build) els.build.textContent = d.build || '—';
+if (els.deployed) {
+const dt = d.deployedAt || d.deployed_at;
+els.deployed.textContent = dt ? new Date(dt).toLocaleString() : '—';
+}
+if (els.uptime && Number.isFinite(d.uptimeSec)) {
+countTo(els.uptime, d.uptimeSec, 800, 's');
+}
 })
-.catch(()=>{ /* משאירים דמה */ });
-}catch(e){}
-}
-
-// מפעילים כשכרטיס ה-Status נכנס לוויופורט (פעם אחת)
-const statusCard = document.querySelector('article.card h3')
-?.closest('.card') || null;
-
-const kick = () => { startDummy(); tryReal(); };
-
-if (statusCard && 'IntersectionObserver' in window){
-const io = new IntersectionObserver((en)=>{
-if (en.some(e=>e.isIntersecting)){ kick(); io.disconnect(); }
-}, {threshold: 0.35});
-io.observe(statusCard);
-} else {
-kick(); // נפילה לאחור
-}
+.catch(() => { /* נשארים על דמה, הכל טוב */ });
 })();
 </script>
 </body>
