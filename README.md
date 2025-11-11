@@ -1,62 +1,96 @@
-# 🚀 Hello Prod — AutoRoy AI DevOps Project
+# 🚀 AutoRoy Cloud — DevOps Demo
 
-[![CI Status](https://github.com/autoroybiz-cpu/hello-prod/actions/workflows/ci.yml/badge.svg)](https://github.com/autoroybiz-cpu/hello-prod/actions/workflows/ci.yml)
+[![CI/CD](https://github.com/autoroybiz-cpu/hello-prod/actions/workflows/ci.yml/badge.svg)](https://github.com/autoroybiz-cpu/hello-prod/actions/workflows/ci.yml)
 [![Build & Push](https://github.com/autoroybiz-cpu/hello-prod/actions/workflows/cicd.yml/badge.svg)](https://github.com/autoroybiz-cpu/hello-prod/actions/workflows/cicd.yml)
+[![Status](https://img.shields.io/uptimerobot/status/m794346188-cd6b1d5e2f46e22b7adxxxxxx.svg?label=Uptime&color=2ecc71)](https://stats.uptimerobot.com/PACu1aRql)
+[![Uptime](https://img.shields.io/uptimerobot/ratio/m794346188-cd6b1d5e2f46e22b7adxxxxxx.svg?label=Uptime%20Ratio)](https://stats.uptimerobot.com/PACu1aRql)
 
-> 🧠 **AutoRoy Cloud** — Full-stack DevOps demo with Docker, CI/CD, Render, and live health monitoring.
-> Built and maintained by AutoRoy AI](https://github.com/autoroybiz-cpu).
+> Production-grade **CI/CD pipeline** demo for a Dockerized web service, built and deployed automatically via **GitHub Actions** + **Render**.
 
 ---
 
-## 🌐 Live Demo
+## 🌍 Live Demo
 - **App:** [https://hello-prod.onrender.com](https://hello-prod.onrender.com)
+- **Health Check:** [https://hello-prod.onrender.com/healthz](https://hello-prod.onrender.com/healthz)
+- **Status Page:** [AutoRoy Cloud Status](https://stats.uptimerobot.com/PACu1aRql)
 
 ---
 
-## 🧩 Overview
-This repository demonstrates a **complete CI/CD pipeline** for a Node.js web service:
+## 🧠 Overview
+AutoRoy Cloud demonstrates a **real DevOps workflow** combining build automation, container deployment, and uptime monitoring.
 
-- 🧱 **Dockerized** Express backend
-- ⚙️ **GitHub Actions** for CI (linting, link checks, health tests)
-- 🐳 **Build & Push** workflow to GHCR (GitHub Container Registry)
-- 🚀 **Render** auto-deploy via `Dockerfile`
-- ❤️ **UptimeRobot** monitors `/healthz` endpoint 24/7
+**Key workflow steps:**
+1. On push → GitHub Actions builds a Docker image and pushes it to GHCR.
+2. Render automatically redeploys the container from the latest image.
+3. UptimeRobot continuously monitors production and `/healthz`.
+4. CI workflows (Prettier + link check) validate code quality on every push.
 
 ---
 
-## 🧠 Tech Stack
+## 🧱 Tech Stack
 
 | Component | Technology |
 |------------|-------------|
-| Language | Node.js (Express) |
-| Containerization | Docker |
-| CI/CD | GitHub Actions |
-| Hosting | Render |
-| Registry | GHCR (GitHub Container Registry) |
-| Monitoring | UptimeRobot |
-| Secrets | GitHub Actions Secrets |
+| **Language** | Node.js (Express) |
+| **Containerization** | Docker |
+| **CI/CD** | GitHub Actions |
+| **Hosting** | Render |
+| **Registry** | GitHub Container Registry (GHCR) |
+| **Monitoring** | UptimeRobot |
+| **Secrets & Tokens** | GitHub Actions Secrets |
 
 ---
 
-## 🧭 Architecture Flow
+## 🧩 Workflows Included
 
-```text
-Developer Push → GitHub Actions CI → Build Docker Image
-↓
-GHCR Registry → Render Deploy Hook → Live Service
-↓
-UptimeRobot monitors /healthz
+### **ci.yml**
+Runs static checks on every push:
+- Prettier formatting
+- Broken link verification
+- Health endpoint validation
+
+### **cicd.yml**
+Builds and pushes Docker images:
+- Multi-arch support with QEMU
+- Automatic login to GHCR
+- Deploy hook triggers Render update
+
+---
+
+## 🩺 Health Check Endpoint
+```bash
+GET /healthz
 {
 "status": "ok",
 "version": "1.0.0",
-"branch": "main",
-"build": "abc1234",
-"uptimeSec": 87234
+"timestamp": 169921234567
 }
-# Run locally (development)
-npm install
-node server.js
+📊 Monitoring & Status
 
-# Or via Docker
-docker build -t autoroy-devops-demo .
-docker run -p 8080:80 autoroy-devops-demo
+
+Live service uptime:
+
+➡️ https://stats.uptimerobot.com/PACu1aRqlAttachment.png
+
+🧠 About AutoRoy Cloud
+
+
+AutoRoy Cloud is a learning-grade DevOps environment created to simulate real-world CI/CD pipelines, showcasing automation, scalability, and reliability.
+
+Built to prove professional-level deployment and monitoring practices.
+
+👨‍💻 Author
+
+
+Built by AutoRoy (Roy Aharonovich)
+
+🔗 https://hello-prod.onrender.comAttachment.png
+
+📡 Status: Uptime DashboardAttachment.png
+
+🏁 License
+
+
+This project is released for educational and professional demonstration purposes.
+
+© 2025 AutoRoy. All rights reserved.
