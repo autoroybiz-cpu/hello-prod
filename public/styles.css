@@ -417,3 +417,47 @@ gap:16px;
 .kv li{ display:contents; } /* מיישר את הזוגות כותרת/ערך לשתי עמודות */
 .kv span{ max-width:100%; } /* מרשה שבירה מלאה בתוך המסגרת */
 .hero .subtitle{ line-height:1.4; } /* קצת צפוף יותר כדי למנוע דחיפות למטה */
+/* ===== Fix 3: Center main hero title perfectly ===== */
+.hero {
+text-align: center;
+display: flex;
+flex-direction: column;
+align-items: center;
+justify-content: center;
+padding: 40px 0 60px;
+}
+
+.hero-inner {
+display: flex;
+flex-direction: column;
+align-items: center;
+justify-content: center;
+text-align: center;
+}
+
+.hero h1 {
+margin: 10px 0 12px;
+font-size: clamp(36px, 5.5vw, 58px);
+line-height: 1.1;
+text-align: center;
+}
+
+.hero .subtitle {
+max-width: 600px;
+margin: 0 auto;
+text-align: center;
+line-height: 1.5;
+}
+
+/* נוודא שגם במובייל זה יישאר ממורכז */
+@media (max-width: 600px) {
+.hero {
+padding: 32px 0 48px;
+}
+.hero h1 {
+font-size: clamp(28px, 6vw, 44px);
+}
+.hero .subtitle {
+max-width: 90%;
+}
+}
