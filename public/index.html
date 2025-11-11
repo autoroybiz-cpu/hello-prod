@@ -38,6 +38,36 @@
 
 <div class="wrap">
 <main id="main" role="main">
+<section class="hero" aria-labelledby="hero-title">
+<div class="container">
+<div class="hero-inner reveal">
+<div class="logo-hero" aria-hidden="true">🚀</div>
+<h1 id="hero-title"><span class="brand">AutoRoy Cloud</span> — DevOps Demo</h1>
+<p class="subtitle">
+Static site on <b>Render CDN</b>, Dockerized with <b>Nginx</b>, auto-deploy from <b>GitHub</b>.
+</p>
+
+<div class="actions cta" role="group" aria-label="Primary actions">
+<a class="btn primary" href="#features">Explore</a>
+<a class="btn ghost" target="_blank" rel="noopener" href="https://github.com/autoroybiz-cpu/devops-training">GitHub repo</a>
+</div>
+
+<div class="stats" aria-label="Key highlights">
+<span class="pill">⚡ CDN • no wake-up</span>
+<span class="pill">🐳 Docker ready</span>
+<span class="pill">🔁 CI/CD on commit</span>
+</div>
+</div>
+
+<div class="hero-card reveal delay-2" aria-label="Quick start commands">
+<pre><code>git add .
+git commit -m "feat: live demo"
+git push # Render auto-deploys
+</code></pre>
+</div>
+</div>
+</section>
+
 <section class="features" aria-labelledby="status-title">
 <div class="container grid">
 <h2 id="status-title" class="sr-only" style="position:absolute;left:-9999px;">Service Status</h2>
@@ -122,31 +152,37 @@ Built by <b>AutoRoy</b> · DevOps &amp; Automations •
 </footer>
 
 <script>
-// --- Theme toggle (works with body.light) ---
+// Theme toggle — supports BOTH body.light and html[data-theme]
 const themeBtn = document.getElementById('themeToggle');
+const htmlEl = document.documentElement;
 
 function applyTheme(mode){
 if(mode === 'light'){
 document.body.classList.add('light');
+htmlEl.setAttribute('data-theme', 'light');
 themeBtn.textContent = '🌙';
 }else{
 document.body.classList.remove('light');
+htmlEl.setAttribute('data-theme', 'dark');
 themeBtn.textContent = '☀';
 }
 localStorage.setItem('theme', mode);
 }
 
-// מצב התחלתי
-const savedTheme = localStorage.getItem('theme');
-applyTheme(savedTheme || (document.body.classList.contains('light') ? 'light' : 'dark'));
+// initial mode (prefer saved; else DOM; else dark)
+const saved = localStorage.getItem('theme');
+const initial =
+saved ||
+(document.body.classList.contains('light') ? 'light' :
+(htmlEl.getAttribute('data-theme') === 'light' ? 'light' : 'dark'));
+applyTheme(initial);
 
-// החלפה בלחיצה
 themeBtn.addEventListener('click', () => {
 const next = document.body.classList.contains('light') ? 'dark' : 'light';
 applyTheme(next);
 });
 
-// Reveal-on-scroll
+// Reveal-on-scroll (unchanged)
 if (!window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
 const io = new IntersectionObserver(entries => {
 entries.forEach(e => e.isIntersecting && e.target.classList.add('in'));
@@ -159,3 +195,4 @@ document.querySelectorAll('.reveal').forEach(el => el.classList.add('in'));
 
 </body>
 </html>
+
