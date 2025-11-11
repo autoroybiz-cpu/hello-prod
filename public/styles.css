@@ -342,3 +342,51 @@ text-shadow: 0 2px 18px rgba(0,0,0,.28);
 
 /* 6) קוסמטיקה: כפתור מצב תאורה שלא יגנוב מקום בכותרת */
 .theme-row{ margin: 14px 0 6px; }
+body {
+-webkit-font-smoothing: antialiased;
+text-rendering: optimizeLegibility;
+}
+
+/* מרווחים כלליים – מקבץ בעדינות את דף הבית */
+.wrap{ padding-top: 80px; } /* היה גבוה יותר */
+.hero{ padding: 52px 0 64px; } /* פחות רווח סביב ההירו */
+.features .grid{ gap: 18px; }
+
+/* ייצוב כותרת: לא נחתכת, לא נשברת מוזר, וחזקה יותר */
+.hero .container{ max-width: 1080px; }
+.hero-inner{ display:flex; flex-direction:column; align-items:center; text-align:center; }
+
+.hero h1{
+font-size: clamp(50px, 5.2vw, 88px); /* דסקטופ גדול ומכובד */
+line-height: 1.08;
+letter-spacing: .2px;
+text-wrap: balance; /* חלוקת שורות חכמה */
+overflow: visible; /* אין חיתוך של אותיות/זוהרים */
+word-break: normal;
+hyphens: manual;
+text-shadow: 0 2px 14px rgba(0,0,0,.28);/* קונטרסט עדין */
+}
+
+/* הרוקט – קצת גדול יותר כדי לתת “כניסה” מרשימה */
+.hero .logo-hero{ font-size: clamp(72px, 7.4vw, 110px); margin-bottom: 12px; }
+
+/* המילה הממותגת – שמירה על קריאות */
+.brand{ text-shadow: 0 2px 18px rgba(0,0,0,.28); }
+
+/* דסקטופ – עוד טיפה נוכחות ותיחום */
+@media (min-width: 961px){
+.hero { padding: 70px 0 82px; }
+.hero .subtitle{ max-width: 720px; font-size: 18px; }
+}
+
+/* מובייל – כותרת גדולה וברורה יותר, פחות רווח מסביב */
+@media (max-width: 600px){
+.wrap{ padding-top: 86px; } /* מתחשב בטופ-בר הסטיקי */
+.hero{ padding: 44px 0 56px; }
+.hero .logo-hero{ font-size: clamp(64px, 16vw, 100px); }
+.hero h1{ font-size: clamp(36px, 9.5vw, 56px); }
+.hero .subtitle{ max-width: 92%; font-size: clamp(15px, 3.8vw, 17px); }
+}
+
+/* ביטוח נוסף נגד חיתוכים – אם יש כלל ישן מתנגש, זה יגבר */
+.wrap .hero h1{ white-space: normal; }
