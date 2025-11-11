@@ -65,9 +65,8 @@ GET /healthz
 "version": "1.0.0",
 "timestamp": 169921234567
 }
+---
 
----
----
 
 📊 Monitoring & Status
 Live service uptime:
