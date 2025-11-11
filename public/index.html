@@ -1,5 +1,5 @@
 <!doctype html>
-<html lang="en">
+<html lang="en" data-theme="dark">
 <head>
 <meta charset="utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
@@ -152,6 +152,13 @@ Built by <b>AutoRoy</b> · DevOps &amp; Automations •
 </footer>
 
 <script>
+// Open at top (unless URL has hash)
+if ('scrollRestoration' in history) history.scrollRestoration = 'manual';
+window.addEventListener('DOMContentLoaded', () => {
+if (!location.hash) window.scrollTo(0, 0);
+});
+
+
 // Theme toggle — supports BOTH body.light and html[data-theme]
 const themeBtn = document.getElementById('themeToggle');
 const htmlEl = document.documentElement;
@@ -195,4 +202,3 @@ document.querySelectorAll('.reveal').forEach(el => el.classList.add('in'));
 
 </body>
 </html>
-
