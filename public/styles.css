@@ -648,3 +648,35 @@ word-break:break-word;
 @media (min-width: 601px){
 .hero .container{ max-width:980px; margin:0 auto; }
 }
+/* === PATCH 2025-11-11 — hero + mobile spacing + topbar mobile === */
+
+/* 1) Hero: יישור מדויק בדסקטופ */
+.hero .container{max-width:1080px;margin:0 auto;}
+.hero-inner{display:flex;flex-direction:column;align-items:center;text-align:center;}
+.hero-inner .logo-hero{margin:0 auto 14px;}
+.hero h1{margin:8px 0 12px;line-height:1.08;text-align:center;}
+.hero .subtitle{max-width:720px;margin:0 auto;}
+
+/* 2) ריווח בין סקשנים/כרטיסים במובייל – שלא יעלה אחד על השני */
+.features{padding:6px 0;overflow:visible;}
+.features .grid{gap:22px;} /* ברירת מחדל */
+.features + .features{margin-top:18px;} /* רווח בין שני סקשנים עוקבים */
+
+@media (max-width:560px){
+.features .grid{gap:18px;} /* ריווח נעים יותר במסכים צרים */
+.card{margin:0;} /* מונע חפיפות שוליים חריגות */
+.kv{flex-wrap:wrap;gap:8px 12px;} /* Status rows נשברות יפה */
+.kv b{white-space:nowrap;}
+.kv span{max-width:100%;overflow-wrap:anywhere;word-break:break-word;}
+}
+
+/* 3) טופ־בר במובייל: קיבוע ימין ושמירה שה-AutoRoy לא ייחתך */
+@media (max-width:600px){
+.topbar .container{
+padding-inline:16px;
+gap:12px;
+}
+.brand{min-width:120px;flex:0 0 auto;} /* שם המותג תמיד נראה */
+.nav{margin-left:auto;gap:12px;}
+.nav a{padding:6px 8px;font-size:14px;}
+}
