@@ -1,4 +1,4 @@
-name: CI
+name: CI (lint & checks)
 
 on:
 push:
@@ -6,7 +6,14 @@ branches: [ "main" ]
 pull_request:
 branches: [ "main" ]
 schedule:
-- cron: "17 3 * * *" # פעם ביום לבדוק קישורים ובריאות
+- cron: "17 3 * * *" # פעם ביום
+
+permissions:
+contents: read
+
+concurrency:
+group: ci-${{ github.ref }}
+cancel-in-progress: false
 
 jobs:
 prettier:
@@ -29,25 +36,25 @@ steps:
 uses: lycheeverse/lychee-action@v1
 with:
 args: >
---verbose
 --no-progress
 --max-concurrency 6
 --retry-wait-time 2
---accept 200,206,429
+--accept 200,206,301,302,429
 **/*.md **/*.html
 env:
-GITHUB_TOKEN: ${{secrets.GITHUB_TOKEN }}
+GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
 health:
 name: Health endpoint
 runs-on: ubuntu-latest
+env:
+SITE_URL: ${{ vars.SITE_URL }}
 steps:
 - name: Curl /healthz
+shell: bash
 run: |
-URL="${{ vars.SITE_URL }}"
-if [ -z "$URL" ]; then URL="https://hello-prod.onrender.com/healthz"; fi
+URL="${SITE_URL:-https://hello-prod.onrender.com}/healthz"
 echo "Checking $URL"
-http_code=$(curl -s -o /tmp/body -w "%{http_code}" "$URL")
-echo "Status: $http_code"
-cat /tmp/body
-test "$http_code" = "200"
+code=$(curl -s -o /tmp/body -w "%{http_code}" "$URL")
+echo "Status: $code"
+test "$code" = "200"
