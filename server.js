@@ -10,7 +10,8 @@ const __dirname = path.dirname(__filename);
 const app = express();
 
 /* ========= Config ========= */
-const PORT = process.env.PORT || 3000;
+const HOST = "0.0.0.0";
+const PORT = parseInt(process.env.PORT || "3000", 10);
 const VERSION = process.env.APP_VERSION || "1.0.0";
 const BUILD_RAW = process.env.APP_BUILD || process.env.RENDER_GIT_COMMIT || "dev";
 const BUILD = String(BUILD_RAW).slice(0, 7);
@@ -28,13 +29,27 @@ console.log(`${req.method} ${req.originalUrl} → ${res.statusCode} (${ms}ms)`);
 next();
 });
 
-/* ========= Trust proxy + gentle HTTPS redirect (for Render/Proxy) ========= */
+/* ========= Trust proxy + gentle HTTPS redirect ========= */
 app.set("trust proxy", true);
 app.use((req, res, next) => {
+// דלג על health/metrics כדי למנוע רעשים
+if (req.path === "/healthz" || req.path === "/metrics") return next();
+
 const proto = req.get("x-forwarded-proto");
 if (proto && proto !== "https") {
-// שמירה על querystring
 return res.redirect(301, `https://${req.get("host")}${req.originalUrl}`);
+}
+next();
+});
+
+/* ========= No-cache for HTML only (פתרון "נפתח באמצע"/קאש ישן) ========= */
+app.use((req, res, next) => {
+// לכל הבקשות שמחזירות HTML (לא קבצי סטטיק)
+if (
+req.method === "GET" &&
+!/\.(?:css|js|png|jpe?g|svg|ico|webp|txt|json|map)$/.test(req.path)
+) {
+res.setHeader("Cache-Control", "no-store");
 }
 next();
 });
@@ -47,7 +62,7 @@ etag: true,
 lastModified: true,
 maxAge: "5m",
 setHeaders: (res, filePath) => {
-// קבצי build עם hash מקבלים קאש ארוך יותר (אם יש)
+// קבצי build עם hash יקבלו קאש ארוך
 if (/\.[0-9a-f]{8,}\.(css|js|png|jpg|svg)$/.test(filePath)) {
 res.setHeader("Cache-Control", "public, max-age=31536000, immutable");
 } else {
@@ -77,7 +92,6 @@ now: new Date().toISOString(),
 app.get("/metrics", (_req, res) => {
 const uptimeSec = Math.round((Date.now() - STARTED_AT) / 1000);
 res.set("Content-Type", "text/plain; version=0.0.4; charset=utf-8");
-// שמות מטריקות פשוטים וברורים
 res.send(
 `# HELP app_info Static labels about this app
 # TYPE app_info gauge
@@ -99,18 +113,21 @@ app.get("/", (_req, res) => {
 res.sendFile(path.join(staticDir, "index.html"));
 });
 
-// שמור על API נתיבים למעלה מה-fallback.
-// כל Route אחר (שאינו קיים בסטטי/ב-API) יחזיר index.html (SPA)
+// שמור על נתיבי API/מדדים לפני ה-fallback
 app.get("*", (req, res, next) => {
-if (req.path.startsWith("/api/") || req.path.startsWith("/metrics") || req.path.startsWith("/healthz")) {
+if (
+req.path.startsWith("/api/") ||
+req.path.startsWith("/metrics") ||
+req.path.startsWith("/healthz")
+) {
 return next();
 }
 res.sendFile(path.join(staticDir, "index.html"));
 });
 
 /* ========= Start ========= */
-const server = app.listen(PORT, () => {
-console.log(`🚀 AutoRoy Cloud listening on :${PORT} (v${VERSION} / ${BUILD} @ ${BRANCH})`);
+const server = app.listen(PORT, HOST, () => {
+console.log(`🚀 AutoRoy Cloud listening on http://${HOST}:${PORT} (v${VERSION} / ${BUILD} @ ${BRANCH})`);
 });
 
 /* ========= Graceful shutdown ========= */
@@ -124,7 +141,6 @@ process.exit(1);
 console.log("Server closed. Bye 👋");
 process.exit(0);
 });
-// Force-exit אם משהו נתקע
 setTimeout(() => process.exit(0), 8000).unref();
 }
 process.on("SIGTERM", () => shutdown("SIGTERM"));
