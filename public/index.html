@@ -153,42 +153,27 @@ Built by <b>AutoRoy</b> · DevOps &amp; Automations •
 </footer>
 
 <script>
-/* ---------- פתיחה תמיד לראש הדף ---------- */
-if ('scrollRestoration' in history) history.scrollRestoration = 'manual';
-function scrollTopIfNeeded(){
-if (!location.hash) {
-window.scrollTo(0, 0);
-setTimeout(() => { if (!location.hash) window.scrollTo(0, 0); }, 0);
-}
-}
-window.addEventListener('DOMContentLoaded', scrollTopIfNeeded);
-window.addEventListener('pageshow', (e) => { if (e.persisted) scrollTopIfNeeded(); });
-
-/* ---------- Theme toggle: מסנכרן html[data-theme] + body.light ---------- */
+// --- Theme toggle: עובד רק עם html[data-theme] + שמירה על body.light לתאימות ---
 const themeBtn = document.getElementById('themeToggle');
 const htmlEl = document.documentElement;
-const bodyEl = document.body;
 
-function applyTheme(mode){
+function setTheme(mode){
 htmlEl.setAttribute('data-theme', mode);
-bodyEl.classList.toggle('light', mode === 'light');
+document.body.classList.toggle('light', mode === 'light'); // תאימות ל-CSS ישן
 themeBtn.textContent = (mode === 'light') ? '🌙' : '☀';
 localStorage.setItem('theme', mode);
 }
 
-const saved = localStorage.getItem('theme');
-const initial =
-saved ||
-(bodyEl.classList.contains('light') ? 'light'
-: (htmlEl.getAttribute('data-theme') === 'light' ? 'light' : 'dark'));
-applyTheme(initial);
+// מצב התחלתי
+setTheme(localStorage.getItem('theme') || htmlEl.getAttribute('data-theme') || 'dark');
 
+// החלפה בלחיצה
 themeBtn.addEventListener('click', () => {
-const next = bodyEl.classList.contains('light') ? 'dark' : 'light';
-applyTheme(next);
+const next = (htmlEl.getAttribute('data-theme') === 'light') ? 'dark' : 'light';
+setTheme(next);
 });
 
-/* ---------- Reveal-on-scroll ---------- */
+// Reveal-on-scroll (בלי שינוי)
 if (!window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
 const io = new IntersectionObserver(entries => {
 entries.forEach(e => e.isIntersecting && e.target.classList.add('in'));
@@ -197,6 +182,9 @@ document.querySelectorAll('.reveal').forEach(el => io.observe(el));
 } else {
 document.querySelectorAll('.reveal').forEach(el => el.classList.add('in'));
 }
+
+// אופציונלי: פתיחה תמיד למעלה אם הדפדפן “זוכר” גלילה
+if (!location.hash) window.scrollTo({ top: 0, behavior: 'auto' });
 </script>
 </body>
 </html>
