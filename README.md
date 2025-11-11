@@ -1,4 +1,8 @@
 <h1 align="center">🚀 Hello Prod – AutoRoy AI DevOps Project</h1>
+# 🚀 AutoRoy Cloud — DevOps Demo
+
+[![CI Status](https://github.com/autoroybiz-cpu/hello-prod/actions/workflows/ci.yml/badge.svg)](https://github.com/autoroybiz-cpu/hello-prod/actions/workflows/ci.yml)
+[![Build & Push](https://github.com/autoroybiz-cpu/hello-prod/actions/workflows/cicd.yml/badge.svg)](https://github.com/autoroybiz-cpu/hello-prod/actions/workflows/cicd.yml)
 
 <p align="center">
   <img src="https://img.shields.io/badge/Status-Live-success?style=flat-square" />
