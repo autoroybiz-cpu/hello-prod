@@ -1,95 +1,199 @@
-<!DOCTYPE html>
-<html lang="en">
+<!doctype html>
+<html lang="en" data-theme="dark">
 <head>
 <meta charset="utf-8" />
-<meta name="viewport" content="width=device-width,initial-scale=1" />
-<title>AutoRoy Cloud • CI/CD Demo</title>
-<link rel="icon" href="/favicon.svg" />
-<link rel="stylesheet" href="/styles.css" />
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+<meta name="color-scheme" content="dark light">
+<title>AutoRoy — DevOps Demo</title>
+
+<meta name="description" content="Static site on Render CDN, Dockerized with Nginx, auto-deploy from GitHub.">
+<meta property="og:title" content="AutoRoy — DevOps Demo">
+<meta property="og:description" content="Static site on Render CDN, Dockerized with Nginx, auto-deploy from GitHub.">
+
+<link rel="icon" href="/favicon.ico?v=3">
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;800&display=swap" rel="stylesheet" />
+<link rel="stylesheet" href="styles.css?v=restore" />
 </head>
+
 <body>
+<!-- רקע דקורטיבי אם מוגדר ב-CSS -->
+<div class="orbs" aria-hidden="true"></div>
 
-<!-- ===== Header ===== -->
-<header class="hero fade-in">
-<span class="logo-bob logo-hero" aria-hidden="true">🚀</span>
-<h1>Welcome to <span class="brand">AutoRoy Cloud</span></h1>
-<h2 class="subtitle">Continuous Deployment Demo</h2>
+<!-- ===== Top bar ===== -->
+<header class="topbar reveal" role="banner">
+<div class="container">
+<div class="brand" aria-label="AutoRoy brand">
+<div class="logo" aria-hidden="true">AR</div>
+<span class="brand-name">AutoRoy</span>
+</div>
 
-<!-- כפתור מצב יום/לילה -->
-<button id="themeToggle" class="btn ghost small">☀️</button>
+<nav class="nav" role="navigation" aria-label="Primary">
+<a href="#features">Features</a>
+<a href="#flow">How it works</a>
+<a class="pill" target="_blank" rel="noopener" href="https://github.com/autoroybiz-cpu/devops-training">View source ↗</a>
+<button id="themeToggle" class="btn small" type="button" aria-label="Toggle theme">🌙</button>
+</nav>
+</div>
 </header>
 
-<!-- ===== Main Content ===== -->
-<main class="grid fade-in">
+<!-- ===== Main ===== -->
+<div class="wrap">
+<main id="main" role="main">
+<!-- Hero -->
+<section class="hero" aria-labelledby="hero-title">
+<div class="container">
+<div class="hero-inner reveal">
+<div class="logo-hero" aria-hidden="true">🚀</div>
+<h1 id="hero-title"><span class="brand">AutoRoy Cloud</span> — DevOps Demo</h1>
+<p class="subtitle">
+Static site on <b>Render CDN</b>, Dockerized with <b>Nginx</b>, auto-deploy from <b>GitHub</b>.
+</p>
 
-<!-- Service Status -->
-<section class="card">
+<div class="actions cta" role="group" aria-label="Primary actions">
+<a class="btn primary" href="#features">Explore</a>
+<a class="btn ghost" target="_blank" rel="noopener" href="https://github.com/autoroybiz-cpu/devops-training">GitHub repo</a>
+</div>
+
+<div class="stats" aria-label="Key highlights">
+<span class="pill">⚡ CDN • no wake-up</span>
+<span class="pill">🐳 Docker ready</span>
+<span class="pill">🔁 CI/CD on commit</span>
+</div>
+</div>
+
+<div class="hero-card reveal delay-2" aria-label="Quick start commands">
+<pre><code>git add .
+git commit -m "feat: live demo"
+git push # Render auto-deploys
+</code></pre>
+</div>
+</div>
+</section>
+
+<!-- ===== Service Status (תוספת חדשה) ===== -->
+<section class="features" aria-labelledby="status-title">
+<div class="container grid">
+<h2 id="status-title" class="sr-only" style="position:absolute;left:-9999px;">Service Status</h2>
+
+<article class="card reveal" aria-label="Service Status">
 <h3>Service Status</h3>
 <ul class="kv">
 <li><b>Status:</b> <span id="status" class="ok">Loading...</span></li>
-<li><b>Version:</b> <span id="version"></span></li>
-<li><b>Build:</b> <span id="build"></span></li>
-<li><b>Deployed:</b> <span id="deployed"></span></li>
-<li><b>Uptime:</b> <span id="uptime"></span></li>
+<li><b>Version:</b> <span id="version">—</span></li>
+<li><b>Build:</b> <span id="build">—</span></li>
+<li><b>Deployed:</b> <span id="deployed">—</span></li>
+<li><b>Uptime:</b> <span id="uptime">—</span></li>
 </ul>
 <div class="pill">Live: <a href="/healthz" target="_blank">/healthz</a></div>
-</section>
-
-<!-- Pipeline -->
-<section class="card">
-<h3>Pipeline</h3>
-<ol class="steps">
-<li>GitHub Actions → Build & Push Docker image</li>
-<li>Render Deploy Hook → Auto deploy</li>
-<li>UptimeRobot → Monitor /healthz</li>
-</ol>
-<p>Status: <b>Live</b> • Build: <span id="build-info">${BUILD}</span></p>
-<p>Monitoring: UptimeRobot</p>
-<div class="actions">
-<a href="/healthz" class="btn primary" target="_blank">Open /healthz</a>
-<a href="https://github.com/" class="btn ghost" target="_blank">View Source</a>
+</article>
 </div>
-<p><b>Version:</b> ${VERSION}<br><b>Last deployed:</b> ${DEPLOYED_AT}</p>
 </section>
 
-<!-- About -->
-<section class="card">
-<h3>About</h3>
-<p>Built with <b>Node.js</b>, <b>Express</b>, <b>Docker</b>, <b>GitHub Actions</b> and <b>Render</b>.</p>
-<p>Owner: <b>AutoRoy AI</b> • Cloud DevOps Demo</p>
+<!-- Features -->
+<section id="features" class="features" aria-labelledby="features-title">
+<div class="container grid">
+<h2 id="features-title" class="sr-only" style="position:absolute;left:-9999px;">Features</h2>
+
+<article class="card reveal" aria-label="Blazing fast">
+<div class="ico" aria-hidden="true">🚀</div>
+<h3>Blazing fast</h3>
+<p>Served from Render CDN with caching and HTTPS out of the box.</p>
+</article>
+
+<article class="card reveal delay-1" aria-label="Dockerized">
+<div class="ico" aria-hidden="true">🐳</div>
+<h3>Dockerized</h3>
+<p>Simple Nginx image for static or demo backends. Ready for Web Service.</p>
+</article>
+
+<article class="card reveal delay-2" aria-label="CI/CD">
+<div class="ico" aria-hidden="true">🔁</div>
+<h3>CI/CD</h3>
+<p>Every push to <code>main</code> triggers an automatic deploy.</p>
+</article>
+</div>
 </section>
 
+<!-- Flow -->
+<section id="flow" class="flow" aria-labelledby="flow-title">
+<div class="container">
+<h2 id="flow-title" class="reveal">How it works</h2>
+<ol class="steps reveal" aria-label="Pipeline steps">
+<li><b>Edit</b> code on GitHub</li>
+<li><b>Commit</b> to <code>main</code></li>
+<li><b>Deploy</b> kicks in on Render (Static Site)</li>
+<li><b>Live</b> site updates instantly</li>
+</ol>
+
+<pre class="block reveal" aria-label="Local Docker run"><code># Local run with Docker (optional)
+docker build -t autoroy-devops-demo .
+docker run -p 8080:80 autoroy-devops-demo
+# open http://localhost:8080
+</code></pre>
+
+<p class="center reveal">
+<a class="btn primary" target="_blank" rel="noopener" href="https://devops-training-3g38.onrender.com">Open live demo ↗</a>
+</p>
+</div>
+</section>
+
+<!-- Tech badges -->
+<section class="tech" aria-labelledby="stack-title">
+<div class="container badges reveal">
+<h2 id="stack-title" class="sr-only" style="position:absolute;left:-9999px;">Tech stack</h2>
+<span class="badge" aria-label="HTML5">HTML5</span>
+<span class="badge" aria-label="CSS3">CSS3</span>
+<span class="badge" aria-label="Nginx">Nginx</span>
+<span class="badge" aria-label="Docker">Docker</span>
+<span class="badge" aria-label="GitHub">GitHub</span>
+<span class="badge" aria-label="Render">Render</span>
+</div>
+</section>
 </main>
+</div><!-- /.wrap -->
 
 <!-- ===== Footer ===== -->
-<footer>
-AutoRoy AI © 2025 — Powered by Render & GitHub Actions
+<footer class="footer" role="contentinfo">
+<div class="container">
+<p>
+Built by <b>AutoRoy</b> · DevOps &amp; Automations •
+<a target="_blank" rel="noopener" href="https://github.com/autoroybiz-cpu/devops-training">source ↗</a>
+</p>
+</div>
 </footer>
 
-<!-- ===== Theme Toggle Script ===== -->
+<!-- ===== Scripts (Theme + Reveal) ===== -->
 <script>
-const body = document.body;
-const toggle = document.getElementById("themeToggle");
+// Theme toggle (original)
+const root = document.documentElement;
+const btn = document.getElementById('themeToggle');
 
-// טוען מצב שמור (אם קיים)
-if (localStorage.getItem("theme") === "light") {
-body.classList.add("light");
-}
+const apply = (mode) => {
+root.setAttribute('data-theme', mode);
+localStorage.setItem('theme', mode);
+btn.textContent = mode === 'light' ? '🌙' : '☀';
+btn.setAttribute('aria-pressed', mode === 'dark' ? 'true' : 'false');
+};
 
-// מאזין ללחיצה על הכפתור
-toggle.addEventListener("click", () => {
-body.classList.toggle("light");
-const mode = body.classList.contains("light") ? "light" : "dark";
-localStorage.setItem("theme", mode);
-toggle.textContent = mode === "light" ? "🌙" : "☀️";
+const saved = localStorage.getItem('theme');
+apply(saved || root.getAttribute('data-theme') || 'dark');
+
+btn.addEventListener('click', () => {
+const next = root.getAttribute('data-theme') === 'dark' ? 'light' : 'dark';
+apply(next);
 });
 
-// קובע את האייקון ההתחלתי
-toggle.textContent = body.classList.contains("light") ? "🌙" : "☀️";
+// Reveal-on-scroll
+if (!window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+const io = new IntersectionObserver(entries => {
+entries.forEach(e => e.isIntersecting && e.target.classList.add('in'));
+}, { threshold: 0.08 });
+document.querySelectorAll('.reveal').forEach(el => io.observe(el));
+} else {
+document.querySelectorAll('.reveal').forEach(el => el.classList.add('in'));
+}
 </script>
-
 </body>
 </html>
-@media (prefers-reduced-motion: reduce){
-*{ animation:none !important; transition:none !important }
-}
