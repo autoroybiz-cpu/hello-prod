@@ -152,44 +152,49 @@ Built by <b>AutoRoy</b> · DevOps &amp; Automations •
 </footer>
 
 <script>
-// Open at top (unless URL has hash)
+/* ---------- פתיחה תמיד לראש הדף (גם עם bfcache) ---------- */
 if ('scrollRestoration' in history) history.scrollRestoration = 'manual';
-window.addEventListener('DOMContentLoaded', () => {
-if (!location.hash) window.scrollTo(0, 0);
-});
 
+function scrollTopIfNeeded(){
+if (!location.hash) {
+window.scrollTo({ top: 0, left: 0, behavior: 'instant' in window ? 'instant' : 'auto' });
+// “ביטוח” קטן נגד שיחזור גלילה דביק בדפדפנים מסוימים
+setTimeout(() => { if (!location.hash) window.scrollTo(0, 0); }, 0);
+}
+}
+window.addEventListener('DOMContentLoaded', scrollTopIfNeeded);
+window.addEventListener('pageshow', (e) => { if (e.persisted) scrollTopIfNeeded(); });
 
-// Theme toggle — supports BOTH body.light and html[data-theme]
+/* ---------- Theme toggle (מסנכרן html[data-theme] + body.light) ---------- */
 const themeBtn = document.getElementById('themeToggle');
 const htmlEl = document.documentElement;
+const bodyEl = document.body;
 
 function applyTheme(mode){
-if(mode === 'light'){
-document.body.classList.add('light');
-htmlEl.setAttribute('data-theme', 'light');
-themeBtn.textContent = '🌙';
-}else{
-document.body.classList.remove('light');
-htmlEl.setAttribute('data-theme', 'dark');
-themeBtn.textContent = '☀';
-}
+// סנכרון לשתי השיטות כדי שלא יהיו קונפליקטים עם CSS קיים
+htmlEl.setAttribute('data-theme', mode);
+bodyEl.classList.toggle('light', mode === 'light');
+
+// כפתור + שמירה
+themeBtn.textContent = (mode === 'light') ? '🌙' : '☀';
 localStorage.setItem('theme', mode);
 }
 
-// initial mode (prefer saved; else DOM; else dark)
+// קביעה התחלתית: localStorage > מה־DOM > ברירת-מחדל dark
 const saved = localStorage.getItem('theme');
 const initial =
 saved ||
-(document.body.classList.contains('light') ? 'light' :
-(htmlEl.getAttribute('data-theme') === 'light' ? 'light' : 'dark'));
+(bodyEl.classList.contains('light') ? 'light'
+: (htmlEl.getAttribute('data-theme') === 'light' ? 'light' : 'dark'));
 applyTheme(initial);
 
+// החלפת מצב בלחיצה
 themeBtn.addEventListener('click', () => {
-const next = document.body.classList.contains('light') ? 'dark' : 'light';
+const next = bodyEl.classList.contains('light') ? 'dark' : 'light';
 applyTheme(next);
 });
 
-// Reveal-on-scroll (unchanged)
+/* ---------- Reveal-on-scroll (ללא שינוי) ---------- */
 if (!window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
 const io = new IntersectionObserver(entries => {
 entries.forEach(e => e.isIntersecting && e.target.classList.add('in'));
