@@ -17,6 +17,9 @@
 }
 
 /* ---------- Theme variables (Light) ---------- */
+/* Light theme variables (תומך גם ב-html[data-theme="light"]) */
+:root[data-theme="light"],
+html[data-theme="light"],
 body.light{
 --bg1:#f7f9ff;
 --bg2:#e9eefb;
@@ -27,6 +30,15 @@ body.light{
 --shadow:0 18px 44px rgba(0,0,0,.15), 0 8px 18px rgba(0,0,0,.08);
 }
 
+/* עוזר לדפדפן לבחור צבעי טפסים/סקולים */
+:root[data-theme="light"] { color-scheme: light; }
+:root[data-theme="dark"] { color-scheme: dark; }
+
+/* אם יש לך כלל ל-btn הקטן בלייט, תשכפל גם לו: */
+:root[data-theme="light"] .btn.small,
+html[data-theme="light"] .btn.small{
+background: rgba(0,0,0,.1);
+}
 *{box-sizing:border-box}
 html,body{height:100%}
 html,body{
