@@ -6,9 +6,11 @@
 <meta name="color-scheme" content="dark light" />
 <title>AutoRoy — DevOps Demo</title>
 
+<!-- SEO / Social -->
 <meta name="description" content="Static site on Render CDN, Dockerized with Nginx, auto-deploy from GitHub." />
 <meta property="og:title" content="AutoRoy — DevOps Demo" />
 <meta property="og:description" content="Static site on Render CDN, Dockerized with Nginx, auto-deploy from GitHub." />
+<link rel="canonical" href="https://hello-prod.onrender.com/" />
 
 <!-- פאביקון עם שבירת קאש -->
 <link rel="icon" href="/favicon-autoroy.svg?v=5" />
@@ -34,16 +36,16 @@ window.addEventListener('pageshow', (e) => { if (e.persisted) window.scrollTo(0,
 
 <header class="topbar reveal" role="banner">
 <div class="container">
-<div class="brand" aria-label="AutoRoy brand">
+<a class="brand" aria-label="AutoRoy brand" href="#">
 <div class="logo" aria-hidden="true">AR</div>
 <span class="brand-name">AutoRoy</span>
-</div>
+</a>
 
 <nav class="nav" role="navigation" aria-label="Primary">
 <a href="#features">Features</a>
 <a href="#flow">How it works</a>
 <a class="pill" target="_blank" rel="noopener"
-href="https://github.com/autoroybiz-cpu/devops-training/tree/main">View source ↗</a>
+href="https://github.com/autoroybiz-cpu/hello-prod">View source ↗</a>
 </nav>
 </div>
 </header>
@@ -59,7 +61,7 @@ href="https://github.com/autoroybiz-cpu/devops-training/tree/main">View source �
 Static site on <b>Render CDN</b>, Dockerized with <b>Nginx</b>, auto-deploy from <b>GitHub</b>.
 </p>
 
-<!-- כפתור מצב תאורה חדש במרכז -->
+<!-- כפתור מצב תאורה במרכז -->
 <div class="theme-row">
 <button id="themeToggle" class="theme-toggle" type="button" aria-label="Toggle theme" aria-pressed="false">
 <span class="icon" aria-hidden="true">🌙</span>
@@ -69,7 +71,8 @@ Static site on <b>Render CDN</b>, Dockerized with <b>Nginx</b>, auto-deploy from
 
 <div class="actions cta" role="group" aria-label="Primary actions">
 <a class="btn primary" href="#features">Explore</a>
-<a class="btn ghost" target="_blank" rel="noopener" href="https://github.com/autoroybiz-cpu/devops-training">GitHub repo</a>
+<a class="btn ghost" target="_blank" rel="noopener"
+href="https://github.com/autoroybiz-cpu/hello-prod">GitHub repo</a>
 </div>
 
 <div class="stats" aria-label="Key highlights">
@@ -102,9 +105,9 @@ git push # Render auto-deploys
 </ul>
 <div class="pill live-link">
 <b>Live Status:</b>
-<a href="/health" target="_blank" class="health-link">
-View detailed health ↗
-</a>
+<a href="/healthz" target="_blank" rel="noopener" class="health-link">/healthz ↗</a>
+</div>
+</article>
 </div>
 </section>
 
@@ -169,7 +172,7 @@ docker run -p 8080:80 autoroy-devops-demo
 <div class="container">
 <p>
 Built by <b>AutoRoy</b> · DevOps &amp; Automations •
-<a target="_blank" rel="noopener" href="https://github.com/autoroybiz-cpu/devops-training">source ↗</a>
+<a target="_blank" rel="noopener" href="https://github.com/autoroybiz-cpu/hello-prod">source ↗</a>
 </p>
 </div>
 </footer>
