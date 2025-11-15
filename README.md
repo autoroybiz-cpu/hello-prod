@@ -12,7 +12,7 @@
 ## 🌍 Live Demo
 - **App:** [https://hello-prod.onrender.com](https://hello-prod.onrender.com)
 - **Health Check:** [https://hello-prod.onrender.com/healthz](https://hello-prod.onrender.com/healthz)
-- **Status Page:** [AutoRoy Cloud Status](https://stats.uptimerobot.com/PACu1aRql)
+- **Status Page:** [AutoRoy Cloud Status]([https://stats.uptimerobot.com/PACu1aRql](https://stats.uptimerobot.com/PAClutARql)
 
 ---
 
